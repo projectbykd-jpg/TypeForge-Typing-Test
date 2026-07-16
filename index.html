@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👑 Day-Group 󠁯● PANEL RESULT</title>
+  <link rel="icon" type="image/png" href="https://drive.google.com/uc?id=1Ufp03QMrsIzpJLVJR60Zl5sX0d0QBmBt">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: radial-gradient(circle at top right, #0b1528, #030712); min-height: 100vh; color: #f8fafc; }
+    .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); }
+    .glass-inner { background: rgba(4, 16, 31, 0.6); border: 1px solid rgba(255, 255, 255, 0.04); }
+    .neon-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.6); color: #22d3ee; }
+    .neon-pink { text-shadow: 0 0 10px rgba(236, 72, 153, 0.6); color: #f472b6; }
+    @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; transform: scale(1); } 50% { text-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; transform: scale(1.02); } }
+    .animate-market { animation: pulse-glow 2s infinite; color: #fff !important; }
+    #main-panel { display: none; }
+  </style>
+</head>
+<body class="p-3 sm:p-6 flex flex-col items-center justify-center select-none min-h-screen">
+
+  <div id="login-screen" class="w-full max-w-md glass-card rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden border-t border-cyan-500/30">
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full"></div>
+    <div class="text-center">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYjE6BX7rI2uk1VjMLC-V4XRzRB7Eb4-ygwD5bmFHQP-kRyWpYk4STrRJkQ0L7M_CHVgWSaDoZz_ed3n0IABdVWiUP5jUqOrydIHopOKAVkBcoFVWvu-IqRRqXZvK9OdeJgMP730ITqRRjg8hZqIdXkkalsjWjebwKse2848SecaMSIF8uaXFUxvcsAkCP/s1536/ChatGPT%20Image%20Jun%2010,%202026,%2001_13_08%20PM.png" class="w-20 h-20 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+      <h2 class="text-2xl font-black neon-cyan tracking-tighter">SECURE ACCESS</h2>
+      <p class="text-[10px] text-slate-400 font-bold tracking-[0.3em]">DAY GROUP PANEL SYSTEM</p>
+    </div>
+    
+    <div class="flex flex-col gap-4">
+      <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all">
+        <i class="fas fa-user text-cyan-400 mr-3"></i>
+        <input type="text" id="user" placeholder="Username" class="bg-transparent outline-none w-full text-sm font-semibold">
+      </div>
+      <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all">
+        <i class="fas fa-lock text-pink-400 mr-3"></i>
+        <input type="password" id="pass" placeholder="Password" class="bg-transparent outline-none w-full text-sm font-semibold">
+      </div>
+      <button onclick="handleLogin()" id="btnLogin" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 rounded-2xl font-bold text-sm tracking-widest transition-all active:scale-95 shadow-lg shadow-cyan-500/20">
+        AUTHORIZE ACCESS
+      </button>
+    </div>
+    <p id="login-err" class="text-[10px] text-rose-500 text-center font-bold h-2"></p>
+  </div>
+
+  <div id="main-panel" class="w-full max-w-5xl flex flex-col gap-4">
+      <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 ease-out glass-card border-l-4 border-emerald-500 px-4 py-3 rounded-xl shadow-xl flex items-center gap-3">
+        <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center"><i class="fas fa-check text-emerald-400 text-xs"></i></div>
+        <span id="toast-msg" class="text-xs font-semibold text-slate-200"></span>
+      </div>
+
+      <div class="w-full glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-3 relative overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-32 h-32 bg-cyan-500/10 blur-3xl rounded-full"></div>
+        <div class="flex items-center gap-3 z-10">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYjE6BX7rI2uk1VjMLC-V4XRzRB7Eb4-ygwD5bmFHQP-kRyWpYk4STrRJkQ0L7M_CHVgWSaDoZz_ed3n0IABdVWiUP5jUqOrydIHopOKAVkBcoFVWvu-IqRRqXZvK9OdeJgMP730ITqRRjg8hZqIdXkkalsjWjebwKse2848SecaMSIF8uaXFUxvcsAkCP/s1536/ChatGPT%20Image%20Jun%2010,%202026,%2001_13_08%20PM.png" alt="Logo" class="w-12 h-12 object-contain">
+          <div><h1 class="text-xl sm:text-2xl font-extrabold tracking-wider neon-cyan">👑 Day-Group 󠁯● PANEL RESULT</h1><p class="text-[10px] text-cyan-400/70 font-semibold tracking-widest -mt-1">INNOVATION STARTS HERE • DESIGN BY KD</p></div>
+        </div>
+        <div id="market-container" class="z-10 glass-inner px-6 py-2 rounded-xl text-center border-cyan-500/30">
+          <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Pasaran</div>
+          <div id="market" class="text-xl font-extrabold text-white tracking-widest">-</div>
+        </div>
+        <div class="text-center sm:text-right z-10 glass-inner px-4 py-1.5 rounded-xl">
+          <div id="live-clock" class="text-sm font-bold font-mono tracking-widest neon-pink">00:00:00</div>
+          <div id="live-date" class="text-[9px] text-slate-400 font-medium">LOADING...</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-5 flex flex-col gap-3">
+  <div class="glass-card rounded-2xl p-4 flex flex-col gap-3 h-full">
+    <div class="flex items-center gap-2 text-xs font-bold text-slate-300 tracking-wider mb-1">
+      <i class="fa-solid fa-square-arrow-down text-cyan-400"></i> INPUT RESULT DATA
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+        <select id="marketSelect" class="bg-black/40 border border-white/10 rounded-xl p-3 text-xs font-bold text-white focus:outline-none focus:border-cyan-500">
+          <option value="">-- Pilih Pasaran --</option>
+      <option value="TOTOMACAU-13">TOTOMACAU-13</option>
+      <option value="TOTOMACAU-16">TOTOMACAU-16</option>
+      <option value="TOTOMACAU-19">TOTOMACAU-19</option>
+      <option value="TOTOMACAU-22">TOTOMACAU-22</option>
+      <option value="TOTOMACAU-23">TOTOMACAU-23</option>
+      <option value="TOTOMACAU-00">TOTOMACAU-00</option>
+      <option value="TOTOMACAU-15-5D">TOTOMACAU-15-5D</option>
+      <option value="TOTOMACAU-21-5D">TOTOMACAU-21-5D</option>
+          </select>
+        <input type="text" id="angkaInput" placeholder="Angka" class="bg-black/40 border border-white/10 rounded-xl p-3 text-xs font-mono text-white focus:outline-none focus:border-cyan-500">
+    </div>
+    
+    <button onclick="sendToPanelZ()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all">
+      <i class="fa-solid fa-bolt mr-2"></i> SEND TO PANEL-Z
+    </button>
+
+    <div class="mt-2 border-t border-white/5 pt-3">
+        <span class="text-[10px] text-slate-400 font-bold mb-2 block">AUTO-SEND RAW DATA:</span>
+        <textarea id="inputText" oninput="autoGenerate()" placeholder="Paste raw text result di sini..." class="w-full h-40 bg-black/40 border border-white/5 rounded-xl p-3 text-xs font-mono focus:outline-none focus:border-cyan-500 transition-all resize-none"></textarea>
+    </div>
+  </div>
+</div>
+        <div class="lg:col-span-7 flex flex-col gap-3">
+          <div class="glass-card rounded-2xl p-4 flex flex-col gap-4">
+            <div class="flex items-center gap-2 text-xs font-bold text-slate-300 tracking-wider"><i class="fa-solid fa-chart-pie text-pink-400"></i> STATUS REAL-TIME MONITOR</div>
+            <div class="grid grid-cols-3 gap-3">
+               <div class="glass-inner rounded-xl p-3 flex flex-col justify-between min-h-[90px] shadow-md relative overflow-hidden">
+                <span class="text-[10px] font-bold text-slate-400">ANGKA 2D</span>
+                <div id="twoDigit" class="text-2xl font-black font-mono neon-gold mt-1">-</div>
+              </div>
+              <div class="glass-inner rounded-xl p-3 flex flex-col justify-between min-h-[90px] shadow-md relative overflow-hidden">
+                <span class="text-[10px] font-bold text-slate-400">SHIO</span>
+                <div id="shio-box" class="text-lg font-extrabold text-emerald-400 truncate mt-2"><span id="shio-icon" class="mr-1"></span><span id="shio">-</span></div>
+              </div>
+              <div class="glass-inner rounded-xl p-3 flex flex-col justify-between min-h-[90px] shadow-md relative overflow-hidden">
+                <span class="text-[10px] font-bold text-slate-400">STATUS</span>
+                <div id="status" class="text-lg font-black tracking-wider text-slate-400 mt-2">-</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[10px] font-bold text-slate-400">LIVE PREVIEW OUTPUT</span>
+              <div id="outputPreview" class="w-full h-32 bg-black/50 border border-white/5 rounded-xl p-3 text-xs font-mono text-cyan-300/90 overflow-y-auto whitespace-pre-wrap"></div>
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 mt-2">
+              <button onclick="triggerAutoSend()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all shadow-lg shadow-purple-900/20">
+                <i class="fa-solid fa-paper-plane mr-2"></i> SEND ALL SYSTEMS (TELEGRAM + LINKTREE + PANEL-Z)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+        <button onclick="copyPrize1()" class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all"><i class="fa-solid fa-circle-1"></i> PRIZE 1</button>
+        <button onclick="copyPrize2()" class="bg-gradient-to-br from-amber-600 to-orange-700 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all"><i class="fa-solid fa-circle-2"></i> PRIZE 2</button>
+        <button onclick="copyPrize3()" class="bg-gradient-to-br from-pink-600 to-rose-700 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all"><i class="fa-solid fa-circle-3"></i> PRIZE 3</button>
+        <button onclick="copyTelegram()" class="bg-gradient-to-br from-sky-600 to-blue-700 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all col-span-2 sm:col-span-1"><i class="fa-brands fa-telegram"></i> TELEGRAM</button>
+        <button onclick="copyLinktree1()" class="bg-gradient-to-br from-cyan-600 to-blue-800 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all">Title LinkTree</button>
+        <button onclick="copyLinktree2()" class="bg-gradient-to-br from-teal-600 to-emerald-800 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all">Pesan LinkTree</button>
+        <button onclick="copyPanelZ()" class="bg-gradient-to-br from-slate-600 to-indigo-900 text-white font-bold text-xs py-3 rounded-xl active:scale-95 transition-all">PANEL-Z</button>
+      </div>
+
+<style>
+.toast-notif{
+    position:fixed;
+    top:20px;
+    right:20px;
+    min-width:300px;
+    max-width:500px;
+    background:#1f2937;
+    color:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,.3);
+    z-index:99999;
+    display:none;
+}
+
+.toast-notif button{
+    margin-top:10px;
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+</style>
+
+<script>
+  let currentUser = "";
+  let resultData = {};
+  const shioIcons = { "KUDA": "🐴", "ULAR": "🐍", "NAGA": "🐉", "KELINCI": "🐇", "HARIMAU": "🐅", "KERBAU": "🐃", "TIKUS": "🐀", "BABI": "🐖", "ANJING": "🐕", "AYAM": "🐓", "MONYET": "🐒", "KAMBING": "🐐" };
+
+  function handleLogin() {
+    const u = document.getElementById('user').value;
+    const p = document.getElementById('pass').value;
+    const btn = document.getElementById('btnLogin');
+    const err = document.getElementById('login-err');
+    if(!u || !p) { err.innerText = "Lengkapi data!"; return; }
+    btn.innerText = "AUTHENTICATING...";
+    btn.disabled = true;
+    google.script.run.withSuccessHandler(res => {
+      if(res.success) {
+        currentUser = u;
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-panel').style.display = 'flex';
+        document.body.classList.remove('justify-center');
+        toast("Selamat Datang, " + res.user);
+      } else {
+        err.innerText = res.message;
+        btn.innerText = "AUTHORIZE ACCESS";
+        btn.disabled = false;
+      }
+    }).checkLogin(u, p);
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('live-clock').innerText = now.toTimeString().split(' ')[0];
+    document.getElementById('live-date').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+  }
+  setInterval(updateClock, 1000); updateClock();
+
+  function toast(message) {
+    const toastBox = document.getElementById('toast');
+    document.getElementById('toast-msg').innerText = message;
+    toastBox.style.transform = "translateY(0)"; toastBox.style.opacity = "1";
+    setTimeout(() => { toastBox.style.transform = "translateY(-100px)"; toastBox.style.opacity = "0"; }, 1800);
+  }
+
+  function autoGenerate() {
+    clearTimeout(window.t);
+    const txt = document.getElementById('inputText').value;
+    if (!txt.trim()) { resetMonitor(); return; }
+    window.t = setTimeout(() => { google.script.run.withSuccessHandler(showResult).processText(txt); }, 50);
+  }
+
+  function showResult(res) {
+    resultData = res || {};
+    const marketEl = document.getElementById('market');
+    marketEl.innerText = res.market || '-';
+    marketEl.className = (res.market && res.market !== '-' && res.market !== 'UNKNOWN') ? "text-xl font-extrabold text-white tracking-widest animate-market" : "text-xl font-extrabold text-white tracking-widest";
+    document.getElementById('twoDigit').innerText = res.twoDigit !== '' ? String(res.twoDigit).padStart(2, '0') : '-';
+    document.getElementById('shio').innerText = res.shio || '-';
+    document.getElementById('shio-icon').innerText = shioIcons[res.shio] || '';
+    const st = document.getElementById('status'); st.innerText = res.status || '-';
+    st.className = res.status === 'BENAR' ? "text-lg font-black tracking-wider text-emerald-400 neon-cyan" : (res.status === 'SALAH' ? "text-lg font-black tracking-wider text-rose-500" : "text-lg font-black tracking-wider text-slate-400");
+    document.getElementById('outputPreview').innerText = res.output || '';
+  }
+
+  function copyPrize1() { if(resultData.prize1){ navigator.clipboard.writeText(resultData.prize1); toast('Prize 1 Disalin!'); } else { toast('Data kosong'); } }
+  function copyPrize2() { if(resultData.prize2){ navigator.clipboard.writeText(resultData.prize2); toast('Prize 2 Disalin!'); } else { toast('Data kosong'); } }
+  function copyPrize3() { if(resultData.prize3){ navigator.clipboard.writeText(resultData.prize3); toast('Prize 3 Disalin!'); } else { toast('Data kosong'); } }
+  
+  function copyTelegram() { 
+    if(resultData.output){ 
+      navigator.clipboard.writeText(resultData.output); 
+      toast('🚀 Format Telegram Disalin!'); 
+      google.script.run.logActivity(currentUser, "Copy Telegram", resultData.output); 
+    } else { toast('❌ Output Teks kosong'); } 
+  }
+
+  function resetMonitor() {
+    resultData = {};
+    document.getElementById('market').innerText = '-';
+    document.getElementById('twoDigit').innerText = '-';
+    document.getElementById('shio').innerText = '-';
+    document.getElementById('shio-icon').innerText = '';
+    document.getElementById('status').innerText = '-';
+    document.getElementById('outputPreview').innerText = '';
+  }
+
+  function triggerAutoSend() {
+
+  const txt =
+    document.getElementById('inputText').value;
+
+  if (!txt) {
+
+    toast("❌ Input Data Kosong!");
+    return;
+
+  }
+
+  toast("⏳ Memproses...");
+
+  console.log("USER =", currentUser);
+
+  google.script.run
+
+    .withSuccessHandler(function(result){
+
+      showSendResult(result);
+
+    })
+
+    .withFailureHandler(function(err){
+
+      showToast(
+        "❌ Error : " + err.message
+      );
+
+    })
+
+    .sendAllSystems(
+      txt,
+      currentUser
+    );
+
+}
+
+     function copyLinktree1() { 
+      if(resultData.market){ 
+        // Mengubah format judul
+        const title = 'Hasil Pengeluaran Pasaran ' + resultData.market;
+        navigator.clipboard.writeText(title); 
+        toast('Title Linktree Disalin!'); 
+        google.script.run.logActivity(currentUser, "Copy Title Linktree", title); 
+      }
+    }
+
+    function copyLinktree2() { 
+      if(resultData.prize1){ 
+        let pesan = `🅿️1️⃣ : ${resultData.prize1}`;
+        
+        // Cek jika Prize 2 ada isinya
+        if(resultData.prize2 && resultData.prize2 !== "") {
+           pesan += `  🅿️2️⃣ : ${resultData.prize2}`;
+        }
+        
+        // Cek jika Prize 3 ada isinya
+        if(resultData.prize3 && resultData.prize3 !== "") {
+           pesan += `  🅿️3️⃣ : ${resultData.prize3}`;
+        }
+        
+        navigator.clipboard.writeText(pesan); 
+        toast('Pesan Linktree Disalin!'); 
+        google.script.run.logActivity(currentUser, "Copy Pesan Linktree", pesan); 
+      } else {
+        toast('❌ Data Prize kosong');
+      }
+    }
+
+    function copyPanelZ() { 
+      if(resultData.prize1){ 
+        navigator.clipboard.writeText(resultData.prize1); 
+        toast('Data Panel-Z Disalin!'); 
+        google.script.run.logActivity(currentUser, "Copy Panel-Z", "Pasaran: " + resultData.market + " | Angka: " + resultData.prize1); 
+      } else { toast('Data kosong'); }
+    }
+</script>
+
+<script>
+function showToast(message){
+
+    const toast = document.getElementById("toastNotif");
+    const text  = document.getElementById("toastText");
+
+    text.innerHTML = message;
+
+    toast.style.display = "block";
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(()=>{
+        toast.style.display = "none";
+    },5000);
+}
+
+function closeToast(){
+    document.getElementById("toastNotif").style.display = "none";
+}
+</script>
+<script>
+function showSendResult(result){
+
+  document.getElementById("modalResult").innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;">
+      <div>📨 Telegram : <b>${result.telegram}</b></div>
+      <div>🌳 LinkTree : <b>${result.linktree}</b></div>
+      <div>⚙️ Panel-Z : <b>${result.panelz}</b></div>
+    </div>
+  `;
+
+  document.getElementById("resultModal").style.display = "flex";
+}
+</script>
+
+<!-- MODAL RESULT -->
+<div id="resultModal"
+     style="display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.7);
+            z-index:99999;
+            justify-content:center;
+            align-items:center;">
+
+  <div style="background:#111827;
+              color:white;
+              padding:20px;
+              border-radius:16px;
+              width:90%;
+              max-width:500px;
+              text-align:center;">
+
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:15px;">
+      📤 HASIL PENGIRIMAN
+    </h2>
+
+    <div id="modalResult"></div>
+
+    <button onclick="closeModal()"
+            style="margin-top:15px;
+                   background:#4f46e5;
+                   color:white;
+                   border:none;
+                   padding:10px 20px;
+                   border-radius:10px;
+                   cursor:pointer;">
+      Tutup
+    </button>
+
+  </div>
+</div>
+
+<script>
+
+function closeModal(){
+  document.getElementById("resultModal").style.display = "none";
+}
+
+function sendToPanelZ(){
+
+  const market = document.getElementById('marketSelect').value;
+  const angka  = document.getElementById('angkaInput').value;
+
+  if(!market || !angka){
+    toast("❌ Pilih pasaran dan isi angka!");
+    return;
+  }
+
+  toast("⏳ Mengirim ke Panel-Z...");
+
+  google.script.run
+    .withSuccessHandler(function(res){
+
+      document.getElementById("modalResult").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;">
+            <div>⚙️ Panel-Z : <b>${res.message || "Berhasil"}</b></div>
+            <div>📍 Pasaran : <b>${market}</b></div>
+            <div>🎯 Angka : <b>${angka}</b></div>
+        </div>
+      `;
+
+      document.getElementById("resultModal").style.display = "flex";
+
+      toast("✅ Berhasil Mengirim ke Panel-Z");
+
+    })
+    .withFailureHandler(function(err){
+
+      toast("❌ Error : " + err.message);
+
+    })
+    .sendToPanelZOnly(
+      market,
+      angka,
+      currentUser
+    );
+}
+</script>
+</body>
+</html>
