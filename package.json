@@ -1,0 +1,24 @@
+{
+  "name": "day-group-panel",
+  "version": "2.0.0",
+  "description": "Day Group Lottery Panel with Authentication",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "npm install",
+    "start": "vercel"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "lottery",
+    "panel",
+    "authentication",
+    "vercel"
+  ],
+  "author": "projectbykd-jpg",
+  "license": "MIT"
+}

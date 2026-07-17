@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👑 Day-Group - REGISTER AKUN</title>
+  <link rel="icon" type="image/png" href="https://drive.google.com/uc?id=1Ufp03QMrsIzpJLVJR60Zl5sX0d0QBmBt">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: radial-gradient(circle at top right, #0b1528, #030712); min-height: 100vh; color: #f8fafc; }
+    .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); }
+    .glass-inner { background: rgba(4, 16, 31, 0.6); border: 1px solid rgba(255, 255, 255, 0.04); }
+    .neon-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.6); color: #22d3ee; }
+    .neon-pink { text-shadow: 0 0 10px rgba(236, 72, 153, 0.6); color: #f472b6; }
+    .input-error { border-color: #f87171 !important; }
+    .error-text { color: #f87171; font-size: 0.75rem; margin-top: 0.25rem; }
+    .success-text { color: #4ade80; font-size: 0.75rem; margin-top: 0.25rem; }
+  </style>
+</head>
+<body class="p-3 sm:p-6 flex flex-col items-center justify-center min-h-screen">
+
+  <div id="register-screen" class="w-full max-w-md glass-card rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden border-t border-cyan-500/30">
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full"></div>
+    
+    <div class="text-center">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYjE6BX7rI2uk1VjMLC-V4XRzRB7Eb4-ygwD5bmFHQP-kRyWpYk4STrRJkQ0L7M_CHVgWSaDoZz_ed3n0IABdVWiUP5jUqOrydIHopOKAVkBcoFVWvu-IqRRqXZvK9OdeJgMP730ITqRRjg8hZqIdXkkalsjWjebwKse2848SecaMSIF8uaXFUxvcsAkCP/s1536/ChatGPT%20Image%20Jun%2010,%202026,%2001_13_08%20PM.png" class="w-20 h-20 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+      <h2 class="text-2xl font-black neon-cyan tracking-tighter">CREATE ACCOUNT</h2>
+      <p class="text-[10px] text-slate-400 font-bold tracking-[0.3em]">DAY GROUP PANEL SYSTEM</p>
+    </div>
+    
+    <div class="flex flex-col gap-4">
+      <!-- Username -->
+      <div>
+        <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all" id="username-container">
+          <i class="fas fa-user text-cyan-400 mr-3"></i>
+          <input type="text" id="username" placeholder="Username (3-20 karakter)" class="bg-transparent outline-none w-full text-sm font-semibold" minlength="3" maxlength="20">
+        </div>
+        <div id="username-error" class="error-text"></div>
+        <div id="username-info" class="text-[9px] text-slate-500 mt-1">Hanya huruf, angka, - dan _</div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all" id="email-container">
+          <i class="fas fa-envelope text-pink-400 mr-3"></i>
+          <input type="email" id="email" placeholder="Email" class="bg-transparent outline-none w-full text-sm font-semibold">
+        </div>
+        <div id="email-error" class="error-text"></div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all" id="password-container">
+          <i class="fas fa-lock text-emerald-400 mr-3"></i>
+          <input type="password" id="password" placeholder="Password (min. 6 karakter)" class="bg-transparent outline-none w-full text-sm font-semibold" minlength="6">
+          <i class="fas fa-eye text-slate-500 cursor-pointer ml-2" onclick="togglePassword()"></i>
+        </div>
+        <div id="password-error" class="error-text"></div>
+        <div id="password-strength" class="text-[9px] text-slate-500 mt-1"></div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <div class="glass-inner rounded-2xl flex items-center px-4 py-3 border border-white/5 focus-within:border-cyan-500/50 transition-all" id="confirm-container">
+          <i class="fas fa-lock text-emerald-400 mr-3"></i>
+          <input type="password" id="confirm" placeholder="Konfirmasi Password" class="bg-transparent outline-none w-full text-sm font-semibold" minlength="6">
+        </div>
+        <div id="confirm-error" class="error-text"></div>
+      </div>
+
+      <!-- Register Button -->
+      <button onclick="handleRegister()" id="btnRegister" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 rounded-2xl font-bold text-sm tracking-widest transition-all active:scale-95 shadow-lg shadow-cyan-500/20">
+        <i class="fas fa-user-plus mr-2"></i>CREATE ACCOUNT
+      </button>
+
+      <!-- Login Link -->
+      <div class="text-center text-sm">
+        <span class="text-slate-400">Sudah punya akun? </span>
+        <a href="index.html" class="neon-cyan hover:underline">Login di sini</a>
+      </div>
+    </div>
+
+    <p id="register-err" class="text-[10px] text-rose-500 text-center font-bold h-2"></p>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" style="display:none" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div class="glass-card rounded-3xl p-8 text-center max-w-md border-t border-cyan-500/30">
+      <i class="fas fa-check-circle text-emerald-400 text-5xl mb-4"></i>
+      <h3 class="text-2xl font-bold neon-cyan mb-2">Akun Berhasil Dibuat!</h3>
+      <p class="text-slate-300 text-sm mb-6">Silakan login dengan username dan password Anda</p>
+      <button onclick="window.location.href='index.html'" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-xl font-bold text-sm tracking-widest">
+        <i class="fas fa-sign-in-alt mr-2"></i>PERGI KE LOGIN
+      </button>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    function togglePassword() {
+      const pwd = document.getElementById('password');
+      const icon = event.target;
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        pwd.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function validateUsername(username) {
+      const pattern = /^[a-zA-Z0-9_-]{3,20}$/;
+      return pattern.test(username);
+    }
+
+    function validateEmail(email) {
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function checkPasswordStrength(password) {
+      if (password.length === 0) return '';
+      if (password.length < 6) return '<span class="text-rose-500">❌ Terlalu pendek</span>';
+      if (password.length < 10) return '<span class="text-yellow-500">⚠️ Cukup aman</span>';
+      if (/[A-Z]/.test(password) && /[0-9]/.test(password) && /[^a-zA-Z0-9]/.test(password)) {
+        return '<span class="text-emerald-500">✅ Sangat aman</span>';
+      }
+      return '<span class="text-cyan-500">✔️ Aman</span>';
+    }
+
+    document.getElementById('password').addEventListener('input', function() {
+      document.getElementById('password-strength').innerHTML = checkPasswordStrength(this.value);
+    });
+
+    async function handleRegister() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+      const btn = document.getElementById('btnRegister');
+      const errDiv = document.getElementById('register-err');
+      
+      errDiv.innerText = '';
+
+      // Validation
+      let hasError = false;
+
+      if (!validateUsername(username)) {
+        document.getElementById('username-error').innerText = 'Username harus 3-20 karakter (huruf, angka, -, _)';
+        document.getElementById('username-container').classList.add('border-rose-500/50');
+        hasError = true;
+      } else {
+        document.getElementById('username-error').innerText = '';
+        document.getElementById('username-container').classList.remove('border-rose-500/50');
+      }
+
+      if (!validateEmail(email)) {
+        document.getElementById('email-error').innerText = 'Format email tidak valid';
+        document.getElementById('email-container').classList.add('border-rose-500/50');
+        hasError = true;
+      } else {
+        document.getElementById('email-error').innerText = '';
+        document.getElementById('email-container').classList.remove('border-rose-500/50');
+      }
+
+      if (!validatePassword(password)) {
+        document.getElementById('password-error').innerText = 'Password minimal 6 karakter';
+        document.getElementById('password-container').classList.add('border-rose-500/50');
+        hasError = true;
+      } else {
+        document.getElementById('password-error').innerText = '';
+        document.getElementById('password-container').classList.remove('border-rose-500/50');
+      }
+
+      if (password !== confirm) {
+        document.getElementById('confirm-error').innerText = 'Password tidak cocok';
+        document.getElementById('confirm-container').classList.add('border-rose-500/50');
+        hasError = true;
+      } else {
+        document.getElementById('confirm-error').innerText = '';
+        document.getElementById('confirm-container').classList.remove('border-rose-500/50');
+      }
+
+      if (hasError) return;
+
+      btn.innerText = 'MEMBUAT AKUN...';
+      btn.disabled = true;
+
+      try {
+        const data = await APIClient.register(username, email, password);
+
+        if (data.success) {
+          document.getElementById('successModal').style.display = 'flex';
+        } else {
+          errDiv.innerText = data.error || 'Gagal membuat akun';
+          btn.innerText = 'CREATE ACCOUNT';
+          btn.disabled = false;
+        }
+      } catch (error) {
+        errDiv.innerText = 'Error: ' + error.message;
+        btn.innerText = 'CREATE ACCOUNT';
+        btn.disabled = false;
+      }
+    }
+
+    // Enter key handler
+    document.getElementById('confirm').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') handleRegister();
+    });
+  </script>
+</body>
+</html>
