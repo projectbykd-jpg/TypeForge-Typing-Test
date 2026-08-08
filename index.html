@@ -5,22 +5,25 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#111318">
   <meta name="description" content="TypeForge v4 — typing platform with tests, quotes, zen, competition, multiplayer and analytics.">
-  <title>TypeForge v4</title>
+  <title>TypeForge Smart v5</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=4.0.0">
+  <link rel="icon" type="image/png" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
+  <link rel="apple-touch-icon" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
+  <link rel="stylesheet" href="./styles.css?v=5.0.0">
 </head>
 <body>
+  <div class="global-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div id="toastContainer" class="toast-container"></div>
 
   <section id="authScreen" class="auth-screen">
     <div class="auth-card">
-      <a class="brand auth-brand" href="#"><span class="brand-mark">tf</span><span>typeforge</span></a>
+      <a class="brand auth-brand" href="#"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span></a>
       <div class="auth-intro">
-        <span class="tiny-label">TYPEFORGE v4</span>
-        <h1>Focus on the words.</h1>
-        <p>Typing tests, quotes, zen, custom practice, competitions, multiplayer races and deep statistics.</p>
+        <span class="tiny-label">TYPEFORGE SMART v5</span>
+        <h1>Train smarter.<br><span class="accent-text">Type smoother.</span></h1>
+        <p>A smarter typing workspace with adaptive practice, live races, deep analytics and a coach that learns from your mistakes.</p>
       </div>
       <div class="auth-tabs">
         <button class="auth-tab active" data-auth-tab="login">login</button>
@@ -49,9 +52,10 @@
   <div id="appShell" class="app hidden">
     <header class="app-header">
       <div class="header-inner">
-        <a class="brand" href="#" data-nav="type"><span class="brand-mark">tf</span><span>typeforge</span><small>v4</small></a>
+        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span><small>smart v5</small></a>
         <nav class="main-nav">
           <button class="nav-link active" data-nav="type" title="Typing Test">⌨</button>
+          <button class="nav-link" data-nav="coach" title="Smart Coach">✦</button>
           <button class="nav-link" data-nav="competition" title="Competition">🏆</button>
           <button class="nav-link" data-nav="practice" title="Text Practice">▤</button>
           <button class="nav-link" data-nav="multiplayer" title="Multiplayer">⚔</button>
@@ -92,6 +96,20 @@
               <button id="launchCustomBtn" class="small-accent-button">use custom text</button>
             </div>
           </div>
+
+          <div id="smartStrip" class="smart-strip">
+            <div class="smart-orb">✦</div>
+            <div class="smart-strip-copy">
+              <span>smart coach</span>
+              <strong id="smartStripTitle">analyzing your typing...</strong>
+              <small id="smartStripText">Complete a test and TypeForge will adapt your next drill.</small>
+            </div>
+            <div class="smart-strip-actions">
+              <button id="smartPracticeQuickBtn" class="smart-button">smart practice</button>
+              <button class="ghost-button" data-nav="coach">open coach</button>
+            </div>
+          </div>
+
           <div id="mainArenaMount" class="arena-mount"></div>
           <div id="idleTypingHint" class="idle-typing-hint">
             <p>click the text area to focus</p>
@@ -150,6 +168,40 @@
         </div>
       </section>
 
+
+      <section id="page-coach" class="page">
+        <div class="section-heading coach-heading">
+          <div><span class="tiny-label">SMART COACH</span><h2>Practice what actually slows you down.</h2><p>TypeForge reads your verified history and turns weak words, weak characters, accuracy and consistency into the next drill.</p></div>
+          <button id="refreshCoachBtn" class="ghost-button">refresh analysis</button>
+        </div>
+        <div class="coach-hero-grid">
+          <article class="smart-hero-card">
+            <div class="smart-hero-glow"></div>
+            <span class="tiny-label">RECOMMENDED NEXT</span>
+            <h3 id="coachRecommendationTitle">Analyzing...</h3>
+            <p id="coachRecommendationText">Your recommendation will appear here.</p>
+            <div id="coachRecommendationTags" class="coach-tags"></div>
+            <button id="startRecommendedBtn" class="accent-button">start recommended drill</button>
+          </article>
+          <article class="daily-card panel">
+            <div class="daily-icon">◫</div><span class="tiny-label">DAILY CHALLENGE</span>
+            <h3>Same challenge. One day.</h3>
+            <p id="dailyChallengeText">60 seconds · top 200 · your active language</p>
+            <div class="daily-progress"><span>today</span><strong id="coachTodayTests">0 tests</strong></div>
+            <button id="startDailyBtn" class="ghost-button">start daily challenge</button>
+          </article>
+        </div>
+        <div class="coach-insight-grid">
+          <article class="panel insight-card"><span class="tiny-label">WEAK WORDS</span><h3>Words to repair</h3><div id="coachWeakWords" class="coach-chip-cloud"></div><button id="practiceWeakWordsBtn" class="ghost-button">practice these words</button></article>
+          <article class="panel insight-card"><span class="tiny-label">WEAK CHARACTERS</span><h3>Keys costing accuracy</h3><div id="coachWeakChars" class="coach-char-grid"></div></article>
+          <article class="panel insight-card"><span class="tiny-label">CURRENT SIGNAL</span><h3 id="coachSignal">building baseline</h3><div class="signal-meters"><div><span>speed</span><i><b id="coachSpeedBar"></b></i></div><div><span>accuracy</span><i><b id="coachAccuracyBar"></b></i></div><div><span>consistency</span><i><b id="coachConsistencyBar"></b></i></div></div></article>
+        </div>
+        <article class="panel coach-method">
+          <div><span class="tiny-label">HOW SMART MODE WORKS</span><h3>Adaptive, but predictable.</h3></div>
+          <div class="method-steps"><span><b>1</b> reads recent verified results</span><span><b>2</b> ranks repeated mistakes & slow words</span><span><b>3</b> mixes weak words with normal vocabulary</span><span><b>4</b> adjusts the next recommendation</span></div>
+        </article>
+      </section>
+
       <section id="page-leaderboard" class="page">
         <div class="section-heading"><div><span class="tiny-label">GLOBAL</span><h2>Leaderboard</h2><p>Best verified score from each registered user.</p></div><button id="refreshLeaderboardBtn" class="ghost-button">refresh</button></div>
         <article class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>#</th><th>user</th><th>wpm</th><th>acc</th><th>mode</th><th>language</th><th>date</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div></article>
@@ -175,7 +227,7 @@
       </section>
     </main>
 
-    <footer class="app-footer"><span>typeforge v4</span><span id="apiFooter">api checking</span><button id="openCommandFooter">commands</button></footer>
+    <footer class="app-footer"><span>typeforge smart v5</span><span id="apiFooter">api checking</span><button id="openCommandFooter">commands</button></footer>
   </div>
 
   <div id="languageModal" class="modal-backdrop hidden"><div class="modal-card"><div class="modal-head"><div><span class="tiny-label">LANGUAGE</span><h3>Choose language</h3></div><button class="icon-button modal-close">×</button></div><input id="languageSearch" class="modal-search" placeholder="search languages..."><div id="languageGrid" class="language-grid"></div></div></div>
@@ -197,7 +249,7 @@
     </div>
   </template>
 
-  <script src="./config.js?v=4.0.0"></script>
-  <script src="./app.js?v=4.0.0"></script>
+  <script src="./config.js?v=5.0.0"></script>
+  <script src="./app.js?v=5.0.0"></script>
 </body>
 </html>
