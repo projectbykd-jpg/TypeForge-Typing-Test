@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
   <link rel="apple-touch-icon" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
-  <link rel="stylesheet" href="./styles.css?v=8.0.0">
+  <link rel="stylesheet" href="./styles.css?v=9.0.0">
 </head>
 <body class="booting">
   <div id="bootScreen" class="boot-screen"><img src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge"><span>loading workspace…</span></div>
@@ -254,25 +254,59 @@
       </section>
 
       <section id="page-competition-room" class="page room-page">
-        <div class="room-page-top">
+        <div class="competition-arena-topbar">
           <button id="backCompetitionHubBtn" class="ghost-button">← competition hub</button>
-          <div class="room-live-status"><i></i><span id="compRoomStatus">open</span></div>
-        </div>
-        <article class="room-hero panel">
-          <div class="room-hero-main"><span class="tiny-label">COMPETITION ROOM</span><h2 id="compRoomName">Room</h2><p>Room code</p><button id="compRoomCode" class="room-code room-code-large">------</button><small>Click the code to copy and share it with friends.</small></div>
-          <div class="room-hero-meta">
-            <div><span>language</span><strong id="compRoomLanguage">—</strong></div>
-            <div><span>duration</span><strong id="compRoomDuration">—</strong></div>
-            <div><span>players</span><strong id="compRoomCount">0</strong></div>
-            <div><span>host</span><strong id="compRoomHost">—</strong></div>
+          <div class="competition-room-summary">
+            <span class="room-live-status"><i></i><b id="compRoomStatus">open</b></span>
+            <span><b id="compRoomLanguage">—</b></span>
+            <span><b id="compRoomDuration">60s</b></span>
+            <button id="compRoomCode" class="room-code room-code-inline" title="Click to copy room code">------</button>
           </div>
-          <div class="room-hero-actions"><button id="startCompetitionTestBtn" class="accent-button">start my attempt</button><button id="leaveCompetitionBtn" class="ghost-button danger-button">leave room</button></div>
-        </article>
-        <div class="room-content-grid">
-          <article class="panel"><div class="panel-title compact-title"><div><span class="tiny-label">PLAYERS</span><h3>Room leaderboard</h3></div><span class="fair-badge">live</span></div><div id="competitionPlayers" class="players"></div></article>
-          <article class="panel room-help-card"><span class="tiny-label">HOW IT WORKS</span><div class="room-step"><b>1</b><span>Share the room code.</span></div><div class="room-step"><b>2</b><span>Friends join this dedicated room page.</span></div><div class="room-step"><b>3</b><span>Each player starts one attempt on the same passage.</span></div><div class="room-step"><b>4</b><span>Verified WPM and accuracy update the room board.</span></div></article>
         </div>
-        <div id="competitionArenaMount" class="arena-mount room-arena"></div>
+
+        <div class="competition-arena-layout">
+          <main class="competition-play-column">
+            <div class="competition-title-row">
+              <div><span class="tiny-label">COMPETITION ROOM</span><h2 id="compRoomName">Room</h2><p>Everyone types the same room passage. You may retry; your best verified score stays on the leaderboard.</p></div>
+              <div class="competition-title-actions"><button id="leaveCompetitionBtn" class="ghost-button danger-button">leave room</button></div>
+            </div>
+
+            <article class="panel competition-test-card">
+              <div class="competition-test-head">
+                <div class="competition-clock"><span>TIME</span><strong id="competitionReadyTimer">01:00</strong></div>
+                <div class="competition-test-meta">
+                  <span>players <b id="compRoomCount">0</b></span>
+                  <span>host <b id="compRoomHost">—</b></span>
+                  <span>best score wins</span>
+                </div>
+              </div>
+              <div id="competitionArenaIntro" class="competition-arena-intro">
+                <div><span class="tiny-label">READY TO TYPE</span><h3>Your competition text is ready.</h3><p>Press the button below. The exact room passage will appear here and your timer starts only when you type the first character.</p></div>
+                <button id="startCompetitionTestBtn" class="accent-button competition-start-button">start typing attempt</button>
+              </div>
+              <div id="competitionArenaMount" class="arena-mount room-arena competition-live-arena"></div>
+            </article>
+
+            <article class="panel competition-room-info">
+              <div><span class="tiny-label">SHARE ROOM</span><h3>Invite friends with this code</h3><p>Friends open Competition → Join room → enter the code. They land directly in this arena.</p></div>
+              <button id="compRoomCodeCopy" class="room-code room-code-large" title="Click to copy">------</button>
+            </article>
+          </main>
+
+          <aside class="competition-board-column">
+            <article class="panel competition-board-card">
+              <div class="panel-title compact-title"><div><span class="tiny-label">LIVE LEADERBOARD</span><h3>Top competitors</h3></div><span class="fair-badge">best score</span></div>
+              <div id="competitionPlayers" class="players competition-scoreboard"></div>
+            </article>
+            <article class="panel competition-rules-card">
+              <span class="tiny-label">HOW IT WORKS</span>
+              <div class="room-step"><b>1</b><span>Share the room code.</span></div>
+              <div class="room-step"><b>2</b><span>Everyone receives the same passage.</span></div>
+              <div class="room-step"><b>3</b><span>Each player can retry while the room is open.</span></div>
+              <div class="room-step"><b>4</b><span>Your best WPM is ranked; accuracy breaks close ties.</span></div>
+            </article>
+          </aside>
+        </div>
       </section>
 
       <section id="page-practice" class="page">
@@ -378,7 +412,7 @@
     </div>
   </template>
 
-  <script src="./config.js?v=8.0.0"></script>
-  <script src="./app.js?v=8.0.0"></script>
+  <script src="./config.js?v=9.0.0"></script>
+  <script src="./app.js?v=9.0.0"></script>
 </body>
 </html>
