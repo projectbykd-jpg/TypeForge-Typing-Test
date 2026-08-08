@@ -3,90 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1020" />
-  <meta name="description" content="Multi-user typing test dashboard with Google Sheets database." />
-  <title>TypeForge — Typing Test</title>
+  <meta name="theme-color" content="#080b14" />
+  <meta name="description" content="TypeForge v3 — multi-user typing test, competition, practice and multiplayer." />
+  <title>TypeForge v3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=3.0.0" />
 </head>
 <body>
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
-
   <div id="toastContainer" class="toast-container"></div>
 
   <section id="authScreen" class="auth-screen">
     <div class="auth-shell">
       <div class="auth-brand-panel">
         <div>
-          <a href="#" class="brand large-brand">
-            <span class="brand-mark">TF</span>
-            <span>TypeForge</span>
-          </a>
+          <a href="#" class="brand large-brand"><span class="brand-mark">TF</span><span>TypeForge</span></a>
           <div class="hero-copy">
-            <span class="eyebrow">MULTI-USER TYPING LAB</span>
-            <h1>Build speed.<br><span>Prove accuracy.</span></h1>
-            <p>Panel typing test modern dengan akun user, hasil tersimpan, riwayat performa, dan leaderboard real-time dari Google Sheets.</p>
+            <span class="eyebrow">TYPEFORGE v3.0</span>
+            <h1>Type faster.<br><span>Compete smarter.</span></h1>
+            <p>Typing test, community practice, competition, multiplayer race, deep analytics, dan progress akun dalam satu panel.</p>
           </div>
         </div>
         <div class="feature-strip">
-          <div><strong>WPM</strong><span>Speed tracking</span></div>
-          <div><strong>ACC</strong><span>Accuracy analysis</span></div>
-          <div><strong>RANK</strong><span>Leaderboard</span></div>
+          <div><strong>LIVE</strong><span>Competition</span></div>
+          <div><strong>1000</strong><span>Advanced words</span></div>
+          <div><strong>XP</strong><span>Level & achievements</span></div>
         </div>
       </div>
 
       <div class="auth-card">
         <div class="auth-card-head">
-          <span class="mobile-brand">TypeForge</span>
+          <span class="mobile-brand">TYPEFORGE v3</span>
           <h2 id="authTitle">Welcome back</h2>
-          <p id="authSubtitle">Masuk untuk melanjutkan latihan mengetikmu.</p>
+          <p id="authSubtitle">Masuk untuk melanjutkan progress mengetikmu.</p>
         </div>
-
         <div class="segmented auth-tabs">
           <button class="seg-btn active" data-auth-tab="login">Login</button>
           <button class="seg-btn" data-auth-tab="register">Daftar</button>
         </div>
 
         <form id="loginForm" class="auth-form">
-          <label>
-            <span>User ID</span>
-            <input id="loginUserId" autocomplete="username" maxlength="24" placeholder="contoh: oliver01" required />
-          </label>
-          <label>
-            <span>Password</span>
-            <div class="password-wrap">
-              <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required />
-              <button type="button" class="ghost-icon toggle-password" aria-label="Tampilkan password">◉</button>
-            </div>
-          </label>
-          <button class="primary-btn full" type="submit">
-            <span>Masuk ke Dashboard</span><span>→</span>
-          </button>
+          <label><span>User ID</span><input id="loginUserId" autocomplete="username" maxlength="24" placeholder="contoh: oliver01" required /></label>
+          <label><span>Password</span><div class="password-wrap">
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required />
+            <button type="button" class="ghost-icon toggle-password" aria-label="Tampilkan password">◉</button>
+          </div></label>
+          <button class="primary-btn full" type="submit"><span>Masuk ke Dashboard</span><span>→</span></button>
         </form>
 
         <form id="registerForm" class="auth-form hidden">
-          <label>
-            <span>Nama Tampilan</span>
-            <input id="registerName" maxlength="40" placeholder="Nama yang tampil di leaderboard" required />
-          </label>
-          <label>
-            <span>User ID</span>
-            <input id="registerUserId" autocomplete="username" maxlength="24" placeholder="4–24 huruf / angka / _" required />
-          </label>
-          <label>
-            <span>Password</span>
-            <div class="password-wrap">
-              <input id="registerPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter" required />
-              <button type="button" class="ghost-icon toggle-password" aria-label="Tampilkan password">◉</button>
-            </div>
-          </label>
-          <button class="primary-btn full" type="submit">
-            <span>Buat Akun</span><span>+</span>
-          </button>
-          <p class="security-note">Password diproses di backend dan tidak disimpan sebagai teks biasa.</p>
+          <label><span>Nama Tampilan</span><input id="registerName" maxlength="40" placeholder="Nama di leaderboard" required /></label>
+          <label><span>User ID</span><input id="registerUserId" autocomplete="username" maxlength="24" placeholder="4–24 huruf / angka / _" required /></label>
+          <label><span>Password</span><div class="password-wrap">
+            <input id="registerPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter" required />
+            <button type="button" class="ghost-icon toggle-password" aria-label="Tampilkan password">◉</button>
+          </div></label>
+          <button class="primary-btn full" type="submit"><span>Buat Akun</span><span>+</span></button>
+          <p class="security-note">Password diproses oleh backend dan tidak disimpan sebagai plaintext.</p>
         </form>
       </div>
     </div>
@@ -94,26 +70,23 @@
 
   <div id="appShell" class="app-shell hidden">
     <aside class="sidebar">
-      <a href="#" class="brand">
-        <span class="brand-mark">TF</span>
-        <span>TypeForge</span>
-      </a>
-
+      <a href="#" class="brand"><span class="brand-mark">TF</span><span>TypeForge <em>v3</em></span></a>
       <nav class="side-nav">
         <button class="nav-item active" data-page="dashboard"><span>⌂</span><b>Dashboard</b></button>
         <button class="nav-item" data-page="test"><span>⌨</span><b>Typing Test</b></button>
+        <button class="nav-item" data-page="competition"><span>🏆</span><b>Competition</b></button>
+        <button class="nav-item" data-page="practice"><span>▤</span><b>Text Practice</b></button>
+        <button class="nav-item" data-page="multiplayer"><span>⚔</span><b>Multiplayer</b></button>
+        <button class="nav-item" data-page="custom"><span>⚙</span><b>Custom Mode</b></button>
+        <div class="nav-separator"></div>
         <button class="nav-item" data-page="leaderboard"><span>♛</span><b>Leaderboard</b></button>
         <button class="nav-item" data-page="history"><span>↺</span><b>History</b></button>
-        <button class="nav-item" data-page="profile"><span>◎</span><b>Profile</b></button>
+        <button class="nav-item" data-page="profile"><span>◎</span><b>Profile & Settings</b></button>
       </nav>
-
       <div class="sidebar-bottom">
         <div class="mini-user">
           <div id="sidebarAvatar" class="avatar">U</div>
-          <div>
-            <strong id="sidebarName">User</strong>
-            <small id="sidebarUserId">@userid</small>
-          </div>
+          <div><strong id="sidebarName">User</strong><small id="sidebarUserId">@userid</small></div>
         </div>
         <button id="logoutBtn" class="logout-btn">Logout</button>
       </div>
@@ -121,178 +94,199 @@
 
     <main class="main">
       <header class="topbar">
-        <div>
-          <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
-          <span class="topbar-kicker">TYPEFORGE PANEL</span>
+        <div class="topbar-left"><button id="mobileMenuBtn" class="mobile-menu-btn">☰</button><span class="topbar-kicker">TYPEFORGE v3.0</span></div>
+        <div class="topbar-actions">
+          <div class="level-pill">LV <b id="topLevel">1</b></div>
+          <div class="status-pill"><span></span> API <b id="apiStatus">checking</b></div>
         </div>
-        <div class="status-pill"><span></span> API <b id="apiStatus">checking</b></div>
       </header>
 
       <section id="page-dashboard" class="page active">
         <div class="page-heading">
-          <div>
-            <span class="eyebrow">OVERVIEW</span>
-            <h2>Hi, <span id="welcomeName">User</span>.</h2>
-            <p>Track your typing performance and keep pushing your personal best.</p>
-          </div>
-          <button class="primary-btn" data-go-test>Start Typing <span>→</span></button>
+          <div><span class="eyebrow">OVERVIEW</span><h2>Hi, <span id="welcomeName">User</span>.</h2><p>Progress, personal best, XP, dan achievement kamu ada di sini.</p></div>
+          <button class="primary-btn" data-go-test>Start 1-Min Test <span>→</span></button>
         </div>
 
-        <div class="stats-grid">
-          <article class="stat-card accent">
-            <span class="stat-label">BEST WPM</span>
-            <strong id="statBestWpm">0</strong>
-            <small>words per minute</small>
-          </article>
-          <article class="stat-card">
-            <span class="stat-label">AVG WPM</span>
-            <strong id="statAvgWpm">0</strong>
-            <small>all completed tests</small>
-          </article>
-          <article class="stat-card">
-            <span class="stat-label">AVG ACCURACY</span>
-            <strong><span id="statAccuracy">0</span><sup>%</sup></strong>
-            <small>typing precision</small>
-          </article>
-          <article class="stat-card">
-            <span class="stat-label">TESTS</span>
-            <strong id="statTests">0</strong>
-            <small>completed sessions</small>
-          </article>
+        <div class="stats-grid five">
+          <article class="stat-card accent"><span class="stat-label">BEST WPM</span><strong id="statBestWpm">0</strong><small>personal record</small></article>
+          <article class="stat-card"><span class="stat-label">AVG WPM</span><strong id="statAvgWpm">0</strong><small>all tests</small></article>
+          <article class="stat-card"><span class="stat-label">ACCURACY</span><strong><span id="statAccuracy">0</span><sup>%</sup></strong><small>average</small></article>
+          <article class="stat-card"><span class="stat-label">TESTS</span><strong id="statTests">0</strong><small>completed</small></article>
+          <article class="stat-card"><span class="stat-label">POINTS</span><strong id="statPoints">0</strong><small>total XP</small></article>
         </div>
 
         <div class="dashboard-grid">
-          <article class="panel-card performance-card">
-            <div class="card-head">
-              <div><span class="eyebrow">RECENT PERFORMANCE</span><h3>Last attempts</h3></div>
-              <button class="text-btn" data-page-link="history">View history →</button>
-            </div>
-            <div id="recentResults" class="recent-results empty-state">Belum ada hasil test.</div>
+          <article class="panel-card">
+            <div class="card-head"><div><span class="eyebrow">PERFORMANCE</span><h3>Recent WPM</h3></div><button class="text-btn" data-page-link="history">History →</button></div>
+            <canvas id="performanceChart" class="performance-chart" height="180"></canvas>
+            <div id="recentResults" class="recent-results empty-state">Belum ada hasil.</div>
           </article>
-
-          <article class="panel-card challenge-card">
-            <span class="eyebrow">NEXT CHALLENGE</span>
-            <div class="challenge-orb"><strong id="challengeTarget">40</strong><span>WPM</span></div>
-            <h3>Beat your best.</h3>
-            <p id="challengeText">Selesaikan test pertamamu dan mulai bangun statistik.</p>
-            <button class="secondary-btn full" data-go-test>Take Challenge</button>
+          <article class="panel-card level-card">
+            <span class="eyebrow">ACCOUNT LEVEL</span>
+            <div class="level-hero"><span>LEVEL</span><strong id="levelNumber">1</strong></div>
+            <div class="xp-row"><span id="xpText">0 / 500 XP</span><span id="xpPercent">0%</span></div>
+            <div class="xp-track"><span id="xpBar"></span></div>
+            <p id="levelHint">Complete tests to earn points.</p>
           </article>
         </div>
+
+        <article class="panel-card achievement-panel">
+          <div class="card-head"><div><span class="eyebrow">ACHIEVEMENTS</span><h3>Your badges</h3></div></div>
+          <div id="achievementGrid" class="achievement-grid"></div>
+        </article>
       </section>
 
       <section id="page-test" class="page">
         <div class="page-heading compact">
-          <div>
-            <span class="eyebrow">TYPING ARENA</span>
-            <h2>Typing Test</h2>
-            <p>Pilih mode, fokus pada akurasi, lalu kejar WPM terbaikmu.</p>
-          </div>
+          <div><span class="eyebrow">CORE TEST</span><h2>Typing Test</h2><p>Standard = 200 common-word pool. Advanced = 1,000-word pool. Durasi utama 60 detik.</p></div>
         </div>
-
-        <div id="testSetup" class="test-setup panel-card">
-          <div class="setup-row">
-            <div>
-              <span class="setup-label">DURATION</span>
-              <div class="segmented test-options" id="durationOptions">
-                <button class="seg-btn" data-duration="15">15s</button>
-                <button class="seg-btn active" data-duration="30">30s</button>
-                <button class="seg-btn" data-duration="60">60s</button>
-                <button class="seg-btn" data-duration="120">120s</button>
-              </div>
-            </div>
-            <div>
-              <span class="setup-label">LANGUAGE</span>
-              <select id="languageSelect" class="select-input">
-                <option value="english">English</option>
-                <option value="indonesian">Indonesia</option>
-              </select>
-            </div>
-            <div>
-              <span class="setup-label">MODE</span>
-              <select id="modeSelect" class="select-input">
-                <option value="words">Words</option>
-                <option value="punctuation">Punctuation</option>
-                <option value="numbers">Numbers</option>
-              </select>
-            </div>
-          </div>
-          <button id="prepareTestBtn" class="primary-btn start-btn">Generate Test <span>⌨</span></button>
+        <div id="testSetup" class="mode-grid">
+          <article class="mode-card selected" data-test-level="standard">
+            <div class="mode-icon">200</div><span class="eyebrow">STANDARD</span><h3>1-Minute Test</h3>
+            <p>60 detik menggunakan 200 kata teratas dari bahasa yang dipilih.</p><span class="mode-meta">Best for daily benchmark</span>
+          </article>
+          <article class="mode-card" data-test-level="advanced">
+            <div class="mode-icon">1K</div><span class="eyebrow">ADVANCED</span><h3>Advanced Test</h3>
+            <p>60 detik dengan pool sampai 1.000 kata untuk variasi dan tantangan lebih tinggi.</p><span class="mode-meta">Harder vocabulary mix</span>
+          </article>
+          <article class="panel-card test-launch-card">
+            <label class="field"><span>LANGUAGE</span><select id="languageSelect" class="select-input language-options"></select></label>
+            <button id="prepareTestBtn" class="primary-btn full">Start 60s Test <span>→</span></button>
+            <button class="secondary-btn full" data-page-link="profile">Typing appearance settings</button>
+          </article>
         </div>
+        <div id="testArenaMount"></div>
+      </section>
 
-        <div id="typingArena" class="typing-arena hidden">
-          <div class="test-livebar">
-            <div class="live-metric timer"><strong id="timerValue">30</strong><span>seconds</span></div>
-            <div class="live-metric"><strong id="liveWpm">0</strong><span>wpm</span></div>
-            <div class="live-metric"><strong id="liveAccuracy">100</strong><span>accuracy</span></div>
-            <button id="restartTestBtn" class="secondary-btn">Restart</button>
-          </div>
+      <section id="page-competition" class="page">
+        <div class="page-heading compact"><div><span class="eyebrow">LIVE SCORE ROOM</span><h2>Competition</h2><p>Buat room publik atau privat dan kejar skor tertinggi pada passage yang sama.</p></div><button id="refreshCompetitionBtn" class="secondary-btn">Refresh Rooms</button></div>
 
-          <article class="typing-card">
-            <div id="passageDisplay" class="passage" tabindex="0"></div>
-            <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Ketik teks di sini" placeholder="Klik di sini lalu mulai mengetik..."></textarea>
+        <div id="competitionHome" class="split-grid">
+          <article class="panel-card">
+            <span class="eyebrow">CREATE COMPETITION</span><h3>Host a new room</h3>
+            <div class="form-grid">
+              <label class="field span2"><span>ROOM NAME</span><input id="compName" maxlength="50" placeholder="Friday Speed Battle"></label>
+              <label class="field"><span>VISIBILITY</span><select id="compVisibility" class="select-input"><option value="PUBLIC">Public</option><option value="PRIVATE">Private</option></select></label>
+              <label class="field"><span>MAX PLAYERS</span><select id="compMax" class="select-input"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></label>
+              <label class="field"><span>LANGUAGE</span><select id="compLanguage" class="select-input language-options"></select></label>
+              <label class="field"><span>WORD POOL</span><select id="compLevel" class="select-input"><option value="standard">200 Standard</option><option value="advanced">1000 Advanced</option></select></label>
+              <label class="field"><span>DURATION</span><select id="compDuration" class="select-input"><option value="60">60 sec</option><option value="120">120 sec</option></select></label>
+            </div>
+            <button id="createCompetitionBtn" class="primary-btn full">Create Competition</button>
           </article>
 
-          <div class="typing-hint">Timer dimulai pada ketikan pertama. Paste dinonaktifkan.</div>
+          <article class="panel-card">
+            <span class="eyebrow">PRIVATE ROOM</span><h3>Join by code</h3>
+            <div class="join-code-row"><input id="compJoinCode" maxlength="8" placeholder="ROOM CODE"><button id="joinCompetitionBtn" class="secondary-btn">Join</button></div>
+            <div class="section-divider"></div>
+            <span class="eyebrow">PUBLIC ROOMS</span>
+            <div id="competitionList" class="room-list empty-state">Loading rooms...</div>
+          </article>
         </div>
 
-        <div id="resultPanel" class="result-panel panel-card hidden">
-          <span class="eyebrow">TEST COMPLETE</span>
-          <h2>Nice run, <span id="resultName">User</span>.</h2>
-          <div class="result-grid">
-            <div class="hero-result"><strong id="resultWpm">0</strong><span>WPM</span></div>
-            <div><strong id="resultAccuracy">0%</strong><span>Accuracy</span></div>
-            <div><strong id="resultRaw">0</strong><span>Raw WPM</span></div>
-            <div><strong id="resultErrors">0</strong><span>Errors</span></div>
+        <div id="competitionRoom" class="hidden">
+          <div class="room-hero panel-card">
+            <div><span class="eyebrow">ACTIVE COMPETITION</span><h2 id="compRoomName">Competition</h2><p>Room code: <button class="code-chip" id="compRoomCode">------</button></p></div>
+            <button id="leaveCompetitionBtn" class="secondary-btn">Leave View</button>
           </div>
-          <div class="result-actions">
-            <button id="retryBtn" class="primary-btn">Try Again</button>
-            <button class="secondary-btn" data-page-link="history">View History</button>
+          <div class="split-grid">
+            <article class="panel-card"><span class="eyebrow">LIVE LEADERBOARD</span><div id="competitionPlayers" class="live-players"></div></article>
+            <article class="panel-card competition-action">
+              <span class="eyebrow">YOUR RUN</span><div class="room-big-number" id="compDurationInfo">60<span>s</span></div>
+              <p>Semua peserta mendapatkan passage yang sama. Ranking berubah saat progress dan hasil masuk.</p>
+              <button id="startCompetitionTestBtn" class="primary-btn full">Start My Attempt</button>
+            </article>
           </div>
+          <div id="competitionArenaMount"></div>
         </div>
+      </section>
+
+      <section id="page-practice" class="page">
+        <div class="page-heading compact"><div><span class="eyebrow">COMMUNITY LIBRARY</span><h2>Text Practice</h2><p>Latihan menggunakan paragraf atau teks utuh yang dibuat komunitas.</p></div><button id="refreshPracticeBtn" class="secondary-btn">Refresh Library</button></div>
+        <div class="split-grid practice-layout">
+          <article class="panel-card">
+            <div class="card-head"><div><span class="eyebrow">TEXT LIBRARY</span><h3>Community texts</h3></div></div>
+            <div id="practiceList" class="practice-list empty-state">Loading texts...</div>
+          </article>
+          <article class="panel-card">
+            <span class="eyebrow">CONTRIBUTE</span><h3>Add a practice text</h3>
+            <label class="field"><span>TITLE</span><input id="practiceTitle" maxlength="80" placeholder="Judul latihan"></label>
+            <label class="field"><span>LANGUAGE</span><select id="practiceLanguage" class="select-input language-options"></select></label>
+            <label class="field"><span>TEXT</span><textarea id="practiceContent" class="large-textarea" maxlength="5000" placeholder="Tulis atau paste paragraf latihan di sini..."></textarea></label>
+            <button id="submitPracticeBtn" class="primary-btn full">Publish to Community</button>
+          </article>
+        </div>
+        <div id="practiceArenaMount"></div>
+      </section>
+
+      <section id="page-multiplayer" class="page">
+        <div class="page-heading compact"><div><span class="eyebrow">LIVE RACE</span><h2>Multiplayer</h2><p>Ready bersama, host memulai race, lalu progress pemain bergerak secara live.</p></div><button id="refreshMultiBtn" class="secondary-btn">Refresh Rooms</button></div>
+        <div id="multiHome" class="split-grid">
+          <article class="panel-card">
+            <span class="eyebrow">CREATE RACE</span><h3>Host multiplayer room</h3>
+            <div class="form-grid">
+              <label class="field span2"><span>ROOM NAME</span><input id="multiName" maxlength="50" placeholder="Night Sprint"></label>
+              <label class="field"><span>VISIBILITY</span><select id="multiVisibility" class="select-input"><option value="PUBLIC">Public</option><option value="PRIVATE">Private</option></select></label>
+              <label class="field"><span>MAX PLAYERS</span><select id="multiMax" class="select-input"><option>2</option><option selected>5</option><option>10</option></select></label>
+              <label class="field"><span>LANGUAGE</span><select id="multiLanguage" class="select-input language-options"></select></label>
+              <label class="field"><span>WORD POOL</span><select id="multiLevel" class="select-input"><option value="standard">200 Standard</option><option value="advanced">1000 Advanced</option></select></label>
+              <label class="field"><span>DURATION</span><select id="multiDuration" class="select-input"><option value="60">60 sec</option><option value="120">120 sec</option></select></label>
+            </div>
+            <button id="createMultiBtn" class="primary-btn full">Create Race</button>
+          </article>
+          <article class="panel-card">
+            <span class="eyebrow">JOIN RACE</span><h3>Enter room code</h3>
+            <div class="join-code-row"><input id="multiJoinCode" maxlength="8" placeholder="ROOM CODE"><button id="joinMultiBtn" class="secondary-btn">Join</button></div>
+            <div class="section-divider"></div><span class="eyebrow">PUBLIC RACES</span>
+            <div id="multiList" class="room-list empty-state">Loading rooms...</div>
+          </article>
+        </div>
+
+        <div id="multiRoom" class="hidden">
+          <div class="room-hero panel-card">
+            <div><span class="eyebrow">MULTIPLAYER LOBBY</span><h2 id="multiRoomName">Race</h2><p>Room code: <button class="code-chip" id="multiRoomCode">------</button></p></div>
+            <div class="room-hero-actions"><button id="multiReadyBtn" class="secondary-btn">I'm Ready</button><button id="multiStartBtn" class="primary-btn hidden">Start Race</button><button id="leaveMultiBtn" class="secondary-btn">Leave View</button></div>
+          </div>
+          <article class="panel-card"><span class="eyebrow">RACERS</span><div id="multiPlayers" class="race-list"></div><div id="multiCountdown" class="countdown hidden">3</div></article>
+          <div id="multiArenaMount"></div>
+        </div>
+      </section>
+
+      <section id="page-custom" class="page">
+        <div class="page-heading compact"><div><span class="eyebrow">YOUR RULES</span><h2>Custom Mode</h2><p>Tentukan sendiri durasi dan daftar kata atau teks yang ingin dilatih.</p></div></div>
+        <article class="panel-card custom-panel">
+          <div class="form-grid">
+            <label class="field"><span>DURATION (10–600 SEC)</span><input id="customDuration" type="number" min="10" max="600" value="60"></label>
+            <label class="field"><span>LABEL / LANGUAGE</span><input id="customLanguage" maxlength="30" value="custom"></label>
+            <label class="field span2"><span>WORDS / TEXT</span><textarea id="customText" class="large-textarea" maxlength="12000" placeholder="apple banana keyboard focus speed ... atau masukkan paragraf sendiri"></textarea></label>
+          </div>
+          <button id="startCustomBtn" class="primary-btn">Start Custom Test</button>
+        </article>
+        <div id="customArenaMount"></div>
       </section>
 
       <section id="page-leaderboard" class="page">
-        <div class="page-heading compact">
-          <div><span class="eyebrow">GLOBAL RANKING</span><h2>Leaderboard</h2><p>Best verified results from registered users.</p></div>
-          <button id="refreshLeaderboardBtn" class="secondary-btn">Refresh</button>
-        </div>
-        <article class="panel-card table-card">
-          <div class="table-scroll">
-            <table>
-              <thead><tr><th>#</th><th>User</th><th>WPM</th><th>Accuracy</th><th>Duration</th><th>Date</th></tr></thead>
-              <tbody id="leaderboardBody"></tbody>
-            </table>
-          </div>
-        </article>
+        <div class="page-heading compact"><div><span class="eyebrow">GLOBAL RANKING</span><h2>Leaderboard</h2><p>Personal best setiap pengguna terdaftar.</p></div><button id="refreshLeaderboardBtn" class="secondary-btn">Refresh</button></div>
+        <article class="panel-card table-card"><div class="table-scroll"><table>
+          <thead><tr><th>#</th><th>User</th><th>WPM</th><th>Accuracy</th><th>Mode</th><th>Language</th><th>Date</th></tr></thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table></div></article>
       </section>
 
       <section id="page-history" class="page">
-        <div class="page-heading compact">
-          <div><span class="eyebrow">YOUR DATA</span><h2>Test History</h2><p>Riwayat test tersimpan di akunmu.</p></div>
-          <button id="refreshHistoryBtn" class="secondary-btn">Refresh</button>
-        </div>
-        <article class="panel-card table-card">
-          <div class="table-scroll">
-            <table>
-              <thead><tr><th>Date</th><th>WPM</th><th>Raw</th><th>Accuracy</th><th>Errors</th><th>Mode</th><th>Duration</th></tr></thead>
-              <tbody id="historyBody"></tbody>
-            </table>
-          </div>
-        </article>
+        <div class="page-heading compact"><div><span class="eyebrow">YOUR DATA</span><h2>Test History</h2><p>Seluruh attempt dari berbagai mode.</p></div><button id="refreshHistoryBtn" class="secondary-btn">Refresh</button></div>
+        <article class="panel-card table-card"><div class="table-scroll"><table>
+          <thead><tr><th>Date</th><th>WPM</th><th>Raw</th><th>Accuracy</th><th>Errors</th><th>Type</th><th>Language</th><th>XP</th></tr></thead>
+          <tbody id="historyBody"></tbody>
+        </table></div></article>
       </section>
 
       <section id="page-profile" class="page">
-        <div class="page-heading compact">
-          <div><span class="eyebrow">ACCOUNT</span><h2>Profile</h2><p>Informasi akun TypeForge.</p></div>
-        </div>
+        <div class="page-heading compact"><div><span class="eyebrow">ACCOUNT & CUSTOMIZATION</span><h2>Profile & Settings</h2><p>Atur tampilan typing arena sesuai kenyamananmu.</p></div></div>
         <div class="profile-grid">
           <article class="panel-card profile-main">
             <div id="profileAvatar" class="avatar xl">U</div>
-            <div>
-              <h3 id="profileName">User</h3>
-              <p id="profileUserId">@userid</p>
-              <span class="member-chip">Registered Member</span>
-            </div>
+            <div><h3 id="profileName">User</h3><p id="profileUserId">@userid</p><span class="member-chip">Registered Member</span></div>
           </article>
           <article class="panel-card">
             <span class="eyebrow">ACCOUNT INFO</span>
@@ -300,14 +294,62 @@
               <div><span>Joined</span><strong id="profileJoined">—</strong></div>
               <div><span>Total Tests</span><strong id="profileTests">0</strong></div>
               <div><span>Personal Best</span><strong id="profileBest">0 WPM</strong></div>
+              <div><span>Total Points</span><strong id="profilePoints">0 XP</strong></div>
             </div>
           </article>
         </div>
+
+        <article class="panel-card settings-card">
+          <div class="card-head"><div><span class="eyebrow">LOOK & FEEL</span><h3>Typing appearance</h3></div><button id="resetSettingsBtn" class="text-btn">Reset defaults</button></div>
+          <div class="settings-grid">
+            <label class="field"><span>FONT STYLE</span><select id="settingFont" class="select-input">
+              <option value="'JetBrains Mono', monospace">JetBrains Mono</option><option value="Inter, sans-serif">Inter</option>
+              <option value="Georgia, serif">Georgia</option><option value="'Courier New', monospace">Courier New</option><option value="monospace">System Mono</option>
+            </select></label>
+            <label class="field"><span>FONT SIZE <b id="fontSizeLabel">22px</b></span><input id="settingFontSize" type="range" min="16" max="34" value="22"></label>
+            <label class="field"><span>VISIBLE LINES</span><select id="settingLines" class="select-input"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>8</option></select></label>
+            <label class="toggle-field"><span><b>Mechanical audio</b><small>Keyboard click feedback</small></span><input id="settingSound" type="checkbox"><i></i></label>
+          </div>
+          <div class="settings-preview"><span>Preview:</span><div id="settingsPreview">the quick brown fox jumps over the lazy dog</div></div>
+        </article>
       </section>
     </main>
   </div>
 
-  <script src="./config.js"></script>
-  <script src="./app.js"></script>
+  <template id="arenaTemplate">
+    <div class="typing-arena">
+      <div class="test-livebar">
+        <div class="live-metric timer"><strong data-timer>60</strong><span>seconds</span></div>
+        <div class="live-metric"><strong data-wpm>0</strong><span>wpm</span></div>
+        <div class="live-metric"><strong data-accuracy>100</strong><span>accuracy</span></div>
+        <div class="live-metric"><strong data-progress>0%</strong><span>progress</span></div>
+        <button data-restart class="secondary-btn">Stop</button>
+      </div>
+      <article class="typing-card">
+        <div data-passage class="passage" tabindex="0"></div>
+        <textarea data-input spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Typing input" placeholder="Klik di sini lalu mulai mengetik..."></textarea>
+      </article>
+      <div class="typing-hint">Timer dimulai pada ketikan pertama. Paste dinonaktifkan.</div>
+      <article data-result class="result-panel panel-card hidden">
+        <span class="eyebrow">TEST COMPLETE</span><h2>Run complete.</h2>
+        <div class="result-grid">
+          <div class="hero-result"><strong data-result-wpm>0</strong><span>WPM</span></div>
+          <div><strong data-result-accuracy>0%</strong><span>Accuracy</span></div>
+          <div><strong data-result-raw>0</strong><span>Raw WPM</span></div>
+          <div><strong data-result-errors>0</strong><span>Errors</span></div>
+          <div><strong data-result-points>0</strong><span>XP Earned</span></div>
+        </div>
+        <div class="analytics-block">
+          <div class="card-head"><div><span class="eyebrow">DEEP ANALYTICS</span><h3>Error heatmap</h3></div></div>
+          <p class="analytics-note">Semakin kuat tile, semakin sering karakter tersebut salah.</p>
+          <div data-char-heatmap class="heatmap"></div>
+          <div class="word-errors"><span class="eyebrow">MOST MISSED WORDS</span><div data-word-errors class="word-error-list"></div></div>
+        </div>
+      </article>
+    </div>
+  </template>
+
+  <script src="./config.js?v=3.0.0"></script>
+  <script src="./app.js?v=3.0.0"></script>
 </body>
 </html>
