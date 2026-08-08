@@ -372,3 +372,85 @@ label input,label textarea,label select,select{font-size:13px!important;padding:
   .main-type-arena{padding:15px!important}.live-primary{font-size:34px!important}.live-secondary{font-size:9px!important;flex-wrap:wrap}.passage,.zen-text{font-size:clamp(21px,var(--typing-size),28px)!important;line-height:1.58!important;min-height:160px!important}
   .type-support-grid,.home-stats-line,.race-steps,.stats-top,.achievement-grid{grid-template-columns:1fr!important}.home-card{min-height:0}.home-stats-line button{text-align:center}.join-code-large,.inline-form{grid-template-columns:1fr!important}.join-code-large button,.inline-form button{width:100%}.form-grid{grid-template-columns:1fr!important}.form-grid .span2{grid-column:auto!important}.clean-cup-stats{grid-template-columns:1fr 1fr!important}.player-row{grid-template-columns:30px minmax(0,1fr)!important}.player-row .player-stat{display:none}
 }
+
+/* ===== TypeForge v8 UX + responsive correction ===== */
+html,body{max-width:100%;overflow-x:hidden}
+body{min-width:0}
+.boot-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;align-content:center;gap:16px;background:var(--bg,#090d0b);color:var(--sub,#6e7b72);font:600 12px Inter,system-ui,sans-serif;letter-spacing:.04em}
+.boot-screen img{width:min(260px,64vw);height:auto;object-fit:contain;filter:drop-shadow(0 12px 28px rgba(0,0,0,.35))}.boot-screen.hidden{display:none}
+
+/* Header: use the existing full TypeForge logo only. */
+.app-header{height:auto;min-height:78px}
+.header-inner{width:min(1380px,calc(100% - 36px));grid-template-columns:minmax(150px,220px) minmax(0,1fr) auto;gap:16px;min-height:78px}
+.header-brand{width:100%;min-width:0;display:flex;align-items:center}.header-brand .brand-logo-full{display:block;width:clamp(145px,13vw,205px)!important;height:auto!important;max-height:52px;object-fit:contain;object-position:left center;border-radius:0!important}
+.auth-brand .brand-logo-full{width:min(250px,72vw)!important;height:auto!important;max-height:none;border-radius:0!important}
+.main-nav{min-width:0;max-width:100%;justify-self:center}.nav-link{min-width:64px!important;height:48px!important;padding:7px 9px!important}.nav-label{font-size:8.5px!important}.nav-icon{font-size:15px!important}
+.header-user{min-width:0}.user-button span{overflow:hidden}.user-button span img{width:100%;height:100%;object-fit:cover;display:block}.user-button span.has-photo{padding:0}
+.content{width:min(1380px,calc(100% - 36px))}
+
+/* Home stays focused and avoids giant empty/side columns. */
+.type-hero p{max-width:720px}.typing-home-grid{grid-template-columns:minmax(230px,.76fr) minmax(520px,1.9fr) minmax(240px,.82fr);gap:16px}.type-side{min-width:0}.type-center{min-width:0}
+.main-type-arena{min-width:0;overflow:hidden}.passage,.zen-text{overflow-wrap:anywhere;word-break:normal}
+
+/* Dedicated competition room page. */
+.room-page{max-width:1180px;margin:0 auto}.room-page-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.room-live-status{display:inline-flex;align-items:center;gap:8px;color:var(--sub);font-size:10px;text-transform:uppercase;letter-spacing:.08em}.room-live-status i{width:8px;height:8px;border-radius:50%;background:var(--main);box-shadow:0 0 14px color-mix(in srgb,var(--main) 60%,transparent)}
+.room-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.8fr);gap:22px;align-items:center;padding:28px!important}.room-hero-main h2{font-size:clamp(28px,4vw,48px);letter-spacing:-.05em;margin:8px 0 14px}.room-hero-main p{margin:0 0 7px;color:var(--sub);font-size:10px}.room-hero-main>small{display:block;margin-top:8px;color:var(--sub);font-size:9px}.room-code-large{display:inline-flex!important;align-items:center;justify-content:center;border:1px dashed color-mix(in srgb,var(--main) 48%,var(--line));background:color-mix(in srgb,var(--main) 8%,var(--bg));padding:12px 16px!important;border-radius:12px!important;font-size:22px!important;letter-spacing:.16em!important;color:var(--main)!important}
+.room-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.room-hero-meta>div{padding:13px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--bg) 55%,transparent)}.room-hero-meta span{display:block;color:var(--sub);font-size:8px;text-transform:uppercase;letter-spacing:.08em}.room-hero-meta strong{display:block;margin-top:6px;font-size:12px;overflow-wrap:anywhere}.room-hero-actions{grid-column:1/-1;display:flex;gap:9px}.room-hero-actions>*{flex:1}.room-content-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.65fr);gap:14px;margin-top:14px}.room-step{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.room-step:last-child{border-bottom:0}.room-step b{width:30px;height:30px;border-radius:9px;background:color-mix(in srgb,var(--main) 11%,var(--panel2));color:var(--main);display:grid;place-items:center}.room-step span{font-size:10px;line-height:1.5}.room-arena:not(:empty){margin-top:16px;padding:20px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.clean-competition-grid{grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr)}
+.danger-button{color:color-mix(in srgb,var(--error) 82%,var(--text))!important}.danger-button:hover{border-color:color-mix(in srgb,var(--error) 40%,var(--line))!important}
+
+/* Profile photo editor. Photo data is loaded from the account record. */
+.profile-editor-card{display:flex!important;align-items:center;gap:14px!important}.profile-avatar-wrap{position:relative;flex:0 0 auto}.profile-avatar{overflow:hidden}.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}.profile-avatar.has-photo{padding:0}.avatar-edit-button{position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:50%;border:2px solid var(--panel);background:var(--main);color:var(--bg);display:grid;place-items:center;font-weight:800}.profile-main-copy{min-width:0}.profile-photo-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.avatar-note{display:block!important;margin-top:6px!important;color:var(--sub)!important;font-size:7px!important}
+
+/* Language picker: readable native and English names. */
+.language-modal-card{width:min(760px,calc(100vw - 28px));max-height:min(780px,88vh);overflow:hidden;display:flex;flex-direction:column}.language-modal-card .modal-head p{margin:5px 0 0;color:var(--sub);font-size:10px}.language-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;overflow:auto;padding-right:3px}.language-choice{min-height:62px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;text-align:left!important;padding:10px 12px!important}.language-choice strong{font-size:12px;color:var(--text)}.language-choice small{font-size:8px;color:var(--sub);margin-top:3px}.language-choice.active strong,.language-choice.active small{color:var(--main)}
+
+/* Focus mode while a test is actively being typed. */
+body.typing-focus{overflow:hidden}
+body.typing-focus .app-header,body.typing-focus .app-footer,body.typing-focus .type-hero,body.typing-focus #page-type .type-side,body.typing-focus #page-type .type-bottom-grid,body.typing-focus #page-type .type-support-grid,body.typing-focus #page-type .home-stats-line,body.typing-focus #idleTypingHint{filter:blur(7px);opacity:.08;pointer-events:none;transform:scale(.985);transition:filter .22s ease,opacity .22s ease,transform .22s ease}
+body.typing-focus #page-type{padding:0!important;display:grid!important;place-items:center;min-height:100vh}
+body.typing-focus #page-type .type-center,body.typing-focus #page-type .type-workspace{width:min(1100px,94vw)!important;max-width:none!important;position:relative;z-index:60}
+body.typing-focus #typingConfig{opacity:.08!important;filter:blur(5px);pointer-events:none;transform:translateY(-8px)}
+body.typing-focus #mainArenaMount{margin-top:0!important;background:color-mix(in srgb,var(--panel) 94%,transparent);box-shadow:0 36px 120px rgba(0,0,0,.42),0 0 0 1px color-mix(in srgb,var(--main) 22%,transparent)}
+body.typing-focus #mainArenaMount .passage,body.typing-focus #mainArenaMount .zen-text{font-size:clamp(27px,var(--typing-size),38px)!important;line-height:1.72!important}
+body.typing-focus #mainArenaMount .live-row{opacity:.72}
+body.typing-focus:before{content:"";position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.42);backdrop-filter:blur(2px);pointer-events:none}
+body.typing-focus #page-type .type-center{z-index:50}
+
+/* Fluid resizing. */
+@media(max-width:1200px){
+  .header-inner{grid-template-columns:minmax(145px,190px) minmax(0,1fr) auto}.header-brand .brand-logo-full{width:clamp(140px,15vw,180px)!important}
+  .typing-home-grid{grid-template-columns:1fr}.type-side{display:grid;grid-template-columns:1fr 1fr}.type-side-right{grid-template-columns:1fr 1fr}.type-center{order:-1}.clean-competition-grid,.competition-feature-grid{grid-template-columns:1fr!important}.room-content-grid{grid-template-columns:1fr}.stats-top{grid-template-columns:1fr 1fr!important}.profile-editor-card{grid-column:1/-1}
+}
+@media(max-width:960px){
+  .header-inner{grid-template-columns:1fr auto;grid-template-rows:auto auto;padding:10px 0}.header-brand{grid-column:1}.header-brand .brand-logo-full{width:170px!important}.header-user{grid-column:2}.main-nav{grid-column:1/-1;grid-row:2;width:100%;justify-self:stretch;justify-content:flex-start;overflow:auto}.nav-link{flex:1 0 65px!important}
+  .room-hero{grid-template-columns:1fr}.room-hero-actions{grid-column:auto}.language-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:680px){
+  .content,.header-inner,.app-footer{width:calc(100% - 20px)!important}.header-brand .brand-logo-full{width:145px!important}.header-user .level-mini,.user-button b{display:none}.nav-label{display:none}.nav-link{flex:1 0 43px!important;min-width:43px!important;height:42px!important;padding:5px!important}
+  .type-side,.type-side-right{grid-template-columns:1fr}.room-hero{padding:18px!important}.room-hero-meta{grid-template-columns:1fr 1fr}.room-hero-actions{flex-direction:column}.room-code-large{font-size:18px!important}.language-grid{grid-template-columns:1fr!important}.profile-editor-card{align-items:flex-start!important}.profile-photo-actions{flex-direction:column}.profile-photo-actions>*{width:100%}
+  .player-row{grid-template-columns:30px minmax(0,1fr)!important}.player-row .player-stat{display:none}.cup-stats{grid-template-columns:1fr 1fr!important}.cup-best{grid-column:1/-1}.room-content-grid{grid-template-columns:1fr}
+  body.typing-focus #page-type .type-center{width:96vw!important}body.typing-focus #mainArenaMount{padding:14px!important;border-radius:14px!important}body.typing-focus #mainArenaMount .passage,body.typing-focus #mainArenaMount .zen-text{font-size:clamp(22px,var(--typing-size),29px)!important;line-height:1.62!important}
+}
+/* Focus mode for every typing arena, not only the main Type page. */
+body.typing-focus #page-competition.active .competition-heading,
+body.typing-focus #page-competition.active .competition-feature-grid,
+body.typing-focus #page-competition.active .subsection-heading,
+body.typing-focus #page-competition.active .competition-room-grid,
+body.typing-focus #page-competition-room.active .room-page-top,
+body.typing-focus #page-competition-room.active .room-hero,
+body.typing-focus #page-competition-room.active .room-content-grid,
+body.typing-focus #page-practice.active .section-heading,
+body.typing-focus #page-practice.active .practice-columns,
+body.typing-focus #page-multiplayer.active .section-heading,
+body.typing-focus #page-multiplayer.active .race-steps,
+body.typing-focus #page-multiplayer.active #multiHome,
+body.typing-focus #page-multiplayer.active #multiRoom > .panel{
+  filter:blur(7px);opacity:.07;pointer-events:none;transition:filter .22s ease,opacity .22s ease;
+}
+body.typing-focus #page-competition.active #globalCompetitionArenaMount,
+body.typing-focus #page-competition-room.active #competitionArenaMount,
+body.typing-focus #page-practice.active #practiceArenaMount,
+body.typing-focus #page-multiplayer.active #multiArenaMount{
+  position:relative;z-index:55;background:color-mix(in srgb,var(--panel) 96%,transparent);box-shadow:0 36px 120px rgba(0,0,0,.42);border-radius:18px;padding:20px;
+}
