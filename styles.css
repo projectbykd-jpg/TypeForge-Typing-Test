@@ -597,3 +597,60 @@ body.typing-focus .page:not(#page-type){display:none!important}
 /* Prevent any stale auth layout from reserving vertical space after login. */
 #authScreen.hidden{position:fixed!important;inset:0!important;width:0!important;height:0!important;min-height:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important;pointer-events:none!important}
 #appShell.hidden{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
+
+/* ===== v13 focus + sticky header correction ===== */
+.app-header{
+  position:sticky!important;
+  top:0!important;
+  z-index:1000!important;
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:auto!important;
+  background:color-mix(in srgb,var(--bg) 92%,transparent)!important;
+  backdrop-filter:blur(18px)!important;
+}
+body.typing-focus .app-header{
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:auto!important;
+}
+/* Never hide the active page merely because a test started. */
+body.typing-focus .page.active{display:block!important}
+body.typing-focus .page:not(.active){display:none!important}
+
+/* Main typing: dim only secondary content. */
+body.typing-focus-main .type-hero,
+body.typing-focus-main .type-side,
+body.typing-focus-main .type-bottom-grid,
+body.typing-focus-main .app-footer{
+  opacity:.12!important;
+  filter:blur(4px)!important;
+  pointer-events:none!important;
+}
+body.typing-focus-main .type-center{position:relative;z-index:20!important}
+
+/* Competition typing: header stays normal, arena stays sharp, side information is softened. */
+body.typing-focus-room #page-competition-room .competition-room-header,
+body.typing-focus-room #page-competition-room .competition-side-stack,
+body.typing-focus-room #page-competition-room .share-room-panel{
+  opacity:.14!important;
+  filter:blur(4px)!important;
+  pointer-events:none!important;
+  transition:opacity .2s ease,filter .2s ease!important;
+}
+body.typing-focus-room #page-competition-room .competition-live-arena,
+body.typing-focus-room #page-competition-room #competitionArenaMount{
+  opacity:1!important;
+  filter:none!important;
+  pointer-events:auto!important;
+  position:relative!important;
+  z-index:30!important;
+}
+
+/* Keep room passage comfortably below the sticky header. */
+#page-competition-room{scroll-margin-top:100px!important}
+.competition-live-arena{scroll-margin-top:112px!important}
+
+/* Ensure the competition start/retry controls are clickable. */
+#startCompetitionTestBtn,#retryCompetitionArena,.competition-live-arena button{pointer-events:auto!important;position:relative;z-index:5}
