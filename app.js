@@ -5,7 +5,8 @@ const CONFIG=window.TYPEFORGE_CONFIG||{};
 const API_URL=CONFIG.API_URL||"";
 const POLL_MS=Number(CONFIG.POLL_MS||1800);
 const TOKEN_KEY="typeforge_session_token";
-const SETTINGS_KEY="typeforge_v5_settings";
+const SETTINGS_KEY="typeforge_settings";
+const LEGACY_SETTINGS_KEYS=["typeforge_v5_settings","typeforge_v4_settings"];
 
 const LANGUAGES=[
 ["english","english"],["indonesian","indonesia"],["spanish","español"],["french","français"],["german","deutsch"],
@@ -15,7 +16,7 @@ const LANGUAGES=[
 ];
 
 const THEMES={
-  forge:{name:"forge",bg:"#111318",panel:"#171a21",panel2:"#1d212a",text:"#d9dee8",sub:"#646b78",main:"#e2b714",error:"#ca4754",caret:"#e2b714"},
+  forge:{name:"forge",bg:"#090d0b",panel:"#111713",panel2:"#172019",text:"#edf3ee",sub:"#6e7b72",main:"#a8ff35",error:"#ff5c6c",caret:"#a8ff35"},
   midnight:{name:"midnight",bg:"#0b1020",panel:"#11182a",panel2:"#17213a",text:"#dce6ff",sub:"#617092",main:"#7aa2f7",error:"#f7768e",caret:"#7aa2f7"},
   matrix:{name:"matrix",bg:"#07110a",panel:"#0c1a10",panel2:"#112718",text:"#c6f6d5",sub:"#4f7d5d",main:"#72f58b",error:"#ff647c",caret:"#72f58b"},
   cyber:{name:"cyber lime",bg:"#080b12",panel:"#10151e",panel2:"#171e2b",text:"#eff5ea",sub:"#697265",main:"#b8ff4f",error:"#ff647c",caret:"#b8ff4f"},
@@ -45,7 +46,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const esc=(v="")=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-function loadSettings(){try{return{...DEFAULT_SETTINGS,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}")};}catch{return{...DEFAULT_SETTINGS};}}
+function loadSettings(){try{let raw=localStorage.getItem(SETTINGS_KEY);if(!raw){for(const k of LEGACY_SETTINGS_KEYS){raw=localStorage.getItem(k);if(raw)break;}}return{...DEFAULT_SETTINGS,...JSON.parse(raw||"{}")} ;}catch{return{...DEFAULT_SETTINGS};}}
 function saveSettings(){localStorage.setItem(SETTINGS_KEY,JSON.stringify(state.settings));applyTheme();syncSettingsUI();if(state.activeArena)state.activeArena.applyAppearance();}
 function toast(msg,type="success"){const d=document.createElement("div");d.className=`toast ${type}`;d.textContent=msg;$("#toastContainer").appendChild(d);setTimeout(()=>d.remove(),3600);}
 function busy(btn,on,text="loading..."){if(!btn)return;if(on){btn.dataset.old=btn.innerHTML;btn.disabled=true;btn.textContent=text;}else{btn.disabled=false;if(btn.dataset.old)btn.innerHTML=btn.dataset.old;}}
@@ -97,12 +98,12 @@ function navigate(page){
 
 async function bootstrap(){
   applyTheme();fillLanguages();wire();syncSettingsUI();
-  try{const h=await api("health");$("#apiFooter").textContent=`api ${h.version||"online"}`;}catch{$("#apiFooter").textContent="api offline";}
+  try{await api("health");$("#apiFooter").textContent="api online";}catch{$("#apiFooter").textContent="api offline";}
   const token=localStorage.getItem(TOKEN_KEY);if(!token){showAuth();return;}
-  try{const d=await api("me",{},true);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();}catch{localStorage.removeItem(TOKEN_KEY);showAuth();toast("session ended — login again","error");}
+  try{const d=await api("me",{},true);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);loadGlobalCompetition();await restartMain();}catch{localStorage.removeItem(TOKEN_KEY);showAuth();toast("session ended — login again","error");}
 }
-async function login(e){e.preventDefault();const b=e.submitter;busy(b,true,"signing in...");try{const d=await api("login",{userId:$("#loginUserId").value.trim(),password:$("#loginPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();toast("welcome back");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
-async function register(e){e.preventDefault();const b=e.submitter;busy(b,true,"creating...");try{const d=await api("register",{displayName:$("#registerName").value.trim(),userId:$("#registerUserId").value.trim(),password:$("#registerPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();toast("account created");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
+async function login(e){e.preventDefault();const b=e.submitter;busy(b,true,"signing in...");try{const d=await api("login",{userId:$("#loginUserId").value.trim(),password:$("#loginPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);loadGlobalCompetition();await restartMain();toast("welcome back");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
+async function register(e){e.preventDefault();const b=e.submitter;busy(b,true,"creating...");try{const d=await api("register",{displayName:$("#registerName").value.trim(),userId:$("#registerUserId").value.trim(),password:$("#registerPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);loadGlobalCompetition();await restartMain();toast("account created");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
 function logout(){clearInterval(state.compPoll);clearInterval(state.multiPoll);state.activeArena?.destroy();localStorage.removeItem(TOKEN_KEY);state.user=null;showAuth();}
 
 function renderModeOptions(){
@@ -197,13 +198,15 @@ async function practiceCoachWeakWords(){
   navigate("type");state.settings.mode="custom";saveSettings();$("#customTextInput").value=Array.from({length:8},()=>words).flat().join(" ");$("#customDurationInput").value=0;await launchCustom();
 }
 
-async function loadDashboard(){if(!state.user)return;try{const d=await api("dashboardV4",{},true);state.dashboard=d;const s=d.stats||{},p=d.progression||{};$("#statBestWpm").textContent=s.bestWpm||0;$("#statAvgWpm").textContent=s.avgWpm||0;$("#statAccuracy").textContent=s.avgAccuracy||0;$("#statTests").textContent=s.totalTests||0;$("#headerLevel").textContent=p.level||1;$("#levelNumber").textContent=p.level||1;$("#pointsTotal").textContent=p.points||0;$("#xpText").textContent=`${p.currentLevelXp||0} / ${p.nextLevelXp||500} xp`;$("#xpBar").style.width=`${p.percent||0}%`;renderAchievements(d.achievements||[]);drawPerformance((d.recent||[]).slice().reverse());}catch(err){if(/session/i.test(err.message))logout();}}
+async function loadDashboard(){if(!state.user)return;try{const d=await api("dashboardV4",{},true);state.dashboard=d;const s=d.stats||{},p=d.progression||{},recent=d.recent||[];$("#statBestWpm").textContent=s.bestWpm||0;$("#statAvgWpm").textContent=s.avgWpm||0;$("#statAccuracy").textContent=s.avgAccuracy||0;$("#statTests").textContent=s.totalTests||0;$("#headerLevel").textContent=p.level||1;$("#levelNumber").textContent=p.level||1;$("#pointsTotal").textContent=p.points||0;$("#xpText").textContent=`${p.currentLevelXp||0} / ${p.nextLevelXp||500} xp`;$("#xpBar").style.width=`${p.percent||0}%`;if($("#typeQuickLevel"))$("#typeQuickLevel").textContent=p.level||1;if($("#typeQuickBest"))$("#typeQuickBest").textContent=s.bestWpm||0;if($("#typeQuickAverage"))$("#typeQuickAverage").textContent=s.avgWpm||0;if($("#typeQuickAccuracy"))$("#typeQuickAccuracy").textContent=`${s.avgAccuracy||0}%`;if($("#typeQuickTests"))$("#typeQuickTests").textContent=s.totalTests||0;renderTypeRecent(recent);renderAchievements(d.achievements||[]);drawPerformance(recent.slice().reverse());}catch(err){if(/session/i.test(err.message))logout();}}
 function renderAchievements(a){$("#achievementGrid").innerHTML=a.map(x=>`<div class="achievement ${x.unlocked?"":"locked"}"><i>${x.icon}</i><b>${esc(x.name)}</b><small>${esc(x.description)}</small></div>`).join("");}
 function drawPerformance(items){const c=$("#performanceChart");if(!c)return;const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=Math.max(300,r.width),h=210;c.width=w*dpr;c.height=h*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);x.clearRect(0,0,w,h);const css=getComputedStyle(document.documentElement);x.strokeStyle=css.getPropertyValue("--line");for(let i=1;i<5;i++){x.beginPath();x.moveTo(0,i*h/5);x.lineTo(w,i*h/5);x.stroke();}if(!items.length)return;const vals=items.map(i=>Number(i.wpm)||0),max=Math.max(40,...vals)*1.15;x.strokeStyle=css.getPropertyValue("--main");x.lineWidth=2;x.beginPath();vals.forEach((v,i)=>{const px=items.length===1?w/2:i/(items.length-1)*(w-10)+5,py=h-10-v/max*(h-22);i?x.lineTo(px,py):x.moveTo(px,py);});x.stroke();}
+function renderTypeRecent(items=[]){const box=$("#typeRecentList");if(!box)return;box.innerHTML=items.length?items.slice(0,5).map(x=>`<div class="type-recent-item"><div><strong>${Math.round(x.wpm||0)} WPM</strong><small>${Number(x.accuracy||0).toFixed(1)}% accuracy · ${esc(x.mode||x.type||"time")} · ${esc(x.language||"")}</small></div><span>${formatDate(x.createdAt,true)}</span></div>`).join(""):`<div class="muted-empty">Complete a few tests and your recent results will appear here.</div>`;}
+
 async function loadHistory(){const b=$("#historyBody");b.innerHTML=`<tr><td colspan="8">loading...</td></tr>`;try{const d=await api("history",{limit:100},true);b.innerHTML=d.items.length?d.items.map(x=>`<tr><td>${formatDate(x.createdAt)}</td><td><strong>${Math.round(x.wpm)}</strong></td><td>${Math.round(x.rawWpm)}</td><td>${Number(x.accuracy).toFixed(1)}%</td><td>${x.errors}</td><td>${esc(x.mode||x.type)}</td><td>${esc(x.language)}</td><td>${x.points||0}</td></tr>`).join(""):`<tr><td colspan="8">no history yet</td></tr>`;}catch(e){b.innerHTML=`<tr><td colspan="8">${esc(e.message)}</td></tr>`;}}
 async function loadLeaderboard(){const b=$("#leaderboardBody");b.innerHTML=`<tr><td colspan="7">loading...</td></tr>`;try{const d=await api("leaderboard",{limit:100});b.innerHTML=d.items.length?d.items.map((x,i)=>`<tr><td class="rank">${i+1}</td><td><div class="table-user"><span class="mini-avatar">${initials(x.displayName)}</span><b>${esc(x.displayName)}</b></div></td><td><strong>${Math.round(x.wpm)}</strong></td><td>${Number(x.accuracy).toFixed(1)}%</td><td>${esc(x.mode||x.type)}</td><td>${esc(x.language)}</td><td>${formatDate(x.createdAt,true)}</td></tr>`).join(""):`<tr><td colspan="7">no scores yet</td></tr>`;}catch(e){b.innerHTML=`<tr><td colspan="7">${esc(e.message)}</td></tr>`;}}
 async function loadGlobalCompetition(){
-  if(!state.user)return;const body=$("#globalCompetitionBody"),btn=$("#startGlobalCompetitionBtn");if(body&&!body.dataset.ready)body.innerHTML=`<tr><td colspan="5">loading global cup...</td></tr>`;
+  if(!state.user)return;const body=$("#globalCompetitionBody"),btn=$("#startGlobalCompetitionBtn"),quickBtn=$("#quickStartCupBtn");if(body&&!body.dataset.ready)body.innerHTML=`<tr><td colspan="5">loading global cup...</td></tr>`;
   try{const d=await api("globalCompetition",{},true),c=d.competition||{};state.globalCompetition=c;
     if($("#globalCompetitionDate"))$("#globalCompetitionDate").textContent=c.date||"today";
     if($("#globalCompetitionPlayers"))$("#globalCompetitionPlayers").textContent=c.participants||0;
@@ -211,9 +214,16 @@ async function loadGlobalCompetition(){
     if($("#globalCompetitionAttempts"))$("#globalCompetitionAttempts").textContent=`${c.attemptsUsed||0}/${c.maxAttempts||3}`;
     if($("#globalCompetitionBest"))$("#globalCompetitionBest").textContent=c.myBest?`${Math.round(c.myBest.wpm)} wpm`:"—";
     if($("#globalCompetitionBestMeta"))$("#globalCompetitionBestMeta").textContent=c.myBest?`${Number(c.myBest.accuracy).toFixed(1)}% accuracy · best attempt`:"complete an attempt to enter the ranking";
-    if(btn){const left=Math.max(0,(c.maxAttempts||3)-(c.attemptsUsed||0));btn.disabled=left<=0;btn.textContent=left>0?`start global attempt · ${left} left`:"daily attempts completed";}
+    if($("#typeCupPlayers"))$("#typeCupPlayers").textContent=c.participants||0;
+    if($("#typeCupRank"))$("#typeCupRank").textContent=c.rank?`#${c.rank}`:"—";
+    if($("#typeCupAttempts"))$("#typeCupAttempts").textContent=`${c.attemptsUsed||0}/${c.maxAttempts||3}`;
+    if($("#typeCupBest"))$("#typeCupBest").textContent=c.myBest?`${Math.round(c.myBest.wpm)} WPM`:"—";
+    if($("#typeCupMeta"))$("#typeCupMeta").textContent=c.myBest?`${Number(c.myBest.accuracy).toFixed(1)}% accuracy · best attempt`:"complete an attempt to join the board";
+    const left=Math.max(0,(c.maxAttempts||3)-(c.attemptsUsed||0));
+    if(btn){btn.disabled=left<=0;btn.textContent=left>0?`start global attempt · ${left} left`:"daily attempts completed";}
+    if(quickBtn){quickBtn.disabled=left<=0;quickBtn.textContent=left>0?`start daily cup · ${left} left`:"daily attempts completed";}
     if(body){body.dataset.ready="1";const leaders=c.leaders||[];body.innerHTML=leaders.length?leaders.map(x=>`<tr class="${x.userId===state.user.userId?"is-me":""}"><td class="rank">${x.rank}</td><td><div class="table-user"><span class="mini-avatar">${initials(x.displayName)}</span><b>${esc(x.displayName)}</b>${x.userId===state.user.userId?'<small class="you-tag">you</small>':''}</div></td><td><strong>${Math.round(x.wpm)}</strong></td><td>${Number(x.accuracy).toFixed(1)}%</td><td>${formatDate(x.createdAt,true)}</td></tr>`).join(""):`<tr><td colspan="5">Be the first player on today's board.</td></tr>`;}
-  }catch(e){if(body)body.innerHTML=`<tr><td colspan="5">${esc(e.message)}</td></tr>`;if(btn)btn.disabled=true;}
+  }catch(e){if(body)body.innerHTML=`<tr><td colspan="5">${esc(e.message)}</td></tr>`;if(btn)btn.disabled=true;if(quickBtn)quickBtn.disabled=true;}
 }
 async function startGlobalCompetition(){
   const btn=$("#startGlobalCompetitionBtn");busy(btn,true,"preparing same passage...");
@@ -262,15 +272,17 @@ function commandKey(e){const items=$$('.command-item');if(e.key==="ArrowDown"){e
 function exportSettings(){const blob=new Blob([JSON.stringify(state.settings,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="typeforge-settings.json";a.click();URL.revokeObjectURL(a.href);}
 function importSettingsFile(file){const r=new FileReader();r.onload=()=>{try{state.settings={...DEFAULT_SETTINGS,...JSON.parse(r.result)};saveSettings();toast("settings imported");restartMain();}catch{toast("invalid settings file","error");}};r.readAsText(file);}
 function mixHex(a,b,t){const pa=parseInt(a.slice(1),16),pb=parseInt(b.slice(1),16),ar=pa>>16,ag=pa>>8&255,ab=pa&255,br=pb>>16,bg=pb>>8&255,bb=pb&255;return"#"+((1<<24)+(Math.round(ar+(br-ar)*t)<<16)+(Math.round(ag+(bg-ag)*t)<<8)+Math.round(ab+(bb-ab)*t)).toString(16).slice(1);}
+function setSettingsTab(tab){$$('[data-settings-tab]').forEach(b=>b.classList.toggle('active',b.dataset.settingsTab===tab));$$('[data-settings-panel]').forEach(p=>p.classList.toggle('active',p.dataset.settingsPanel===tab));}
 
 function wire(){
   $$('[data-auth-tab]').forEach(b=>b.onclick=()=>authTab(b.dataset.authTab));$("#loginForm").onsubmit=login;$("#registerForm").onsubmit=register;$$('.toggle-password').forEach(b=>b.onclick=()=>{const i=b.parentElement.querySelector("input");i.type=i.type==="password"?"text":"password";});
+  $$('[data-settings-tab]').forEach(b=>b.onclick=()=>setSettingsTab(b.dataset.settingsTab));
   $$('[data-nav]').forEach(b=>b.onclick=e=>{e.preventDefault();navigate(b.dataset.nav);});$("#logoutBtn").onclick=logout;
   $("#togglePunctuation").onclick=()=>{state.settings.punctuation=!state.settings.punctuation;saveSettings();restartMain();};$("#toggleNumbers").onclick=()=>{state.settings.numbers=!state.settings.numbers;saveSettings();restartMain();};$("#languageButton").onclick=openLanguage;
   $$('.mode-chip').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));bindModeOptionButtons();$("#launchCustomBtn").onclick=launchCustom;
   $(".modal-close").onclick=closeLanguage;$("#languageModal").onclick=e=>{if(e.target===$("#languageModal"))closeLanguage();};$("#languageSearch").oninput=e=>renderLanguageGrid(e.target.value);
   $("#smartPracticeQuickBtn").onclick=startSmartPractice;$("#refreshCoachBtn").onclick=()=>loadSmartCoach(false);$("#startRecommendedBtn").onclick=startSmartPractice;$("#startDailyBtn").onclick=startDailyChallenge;$("#practiceWeakWordsBtn").onclick=practiceCoachWeakWords;$("#refreshLeaderboardBtn").onclick=loadLeaderboard;$("#refreshHistoryBtn").onclick=loadHistory;$("#refreshPracticeBtn").onclick=loadPractice;$("#submitPracticeBtn").onclick=submitPractice;
-  $("#startGlobalCompetitionBtn").onclick=startGlobalCompetition;$("#refreshGlobalCompetitionBtn").onclick=loadGlobalCompetition;$("#createCompetitionBtn").onclick=()=>createRoom("competition");$("#joinCompetitionBtn").onclick=()=>joinRoom("competition",$("#compJoinCode").value);$("#refreshCompetitionBtn").onclick=()=>{loadGlobalCompetition();loadCompetitionRooms();};$("#startCompetitionTestBtn").onclick=startCompetition;$("#leaveCompetitionBtn").onclick=()=>leaveRoom("competition");$("#compRoomCode").onclick=e=>copyCode(e.currentTarget);
+  $("#startGlobalCompetitionBtn").onclick=startGlobalCompetition;if($("#quickStartCupBtn"))$("#quickStartCupBtn").onclick=()=>{navigate("competition");setTimeout(startGlobalCompetition,80);};$("#refreshGlobalCompetitionBtn").onclick=loadGlobalCompetition;$("#createCompetitionBtn").onclick=()=>createRoom("competition");$("#joinCompetitionBtn").onclick=()=>joinRoom("competition",$("#compJoinCode").value);$("#refreshCompetitionBtn").onclick=()=>{loadGlobalCompetition();loadCompetitionRooms();};$("#startCompetitionTestBtn").onclick=startCompetition;$("#leaveCompetitionBtn").onclick=()=>leaveRoom("competition");$("#compRoomCode").onclick=e=>copyCode(e.currentTarget);
   $("#createMultiBtn").onclick=()=>createRoom("multiplayer");$("#joinMultiBtn").onclick=()=>joinRoom("multiplayer",$("#multiJoinCode").value);$("#refreshMultiBtn").onclick=loadMultiRooms;$("#multiReadyBtn").onclick=toggleReady;$("#multiStartBtn").onclick=startRace;$("#leaveMultiBtn").onclick=()=>leaveRoom("multiplayer");$("#multiRoomCode").onclick=e=>copyCode(e.currentTarget);
   const bindSetting=(id,key,kind="value")=>{$(id).onchange=e=>{state.settings[key]=kind==="checked"?e.target.checked:kind==="number"?Number(e.target.value):e.target.value;saveSettings();};};
   bindSetting("#settingDifficulty","difficulty");bindSetting("#settingMinWpm","minWpm","number");bindSetting("#settingMinAccuracy","minAccuracy","number");bindSetting("#settingStopError","stopOnError","checked");bindSetting("#settingBlind","blind","checked");bindSetting("#settingFreedom","freedom","checked");bindSetting("#settingCaret","caret");bindSetting("#settingSmoothCaret","smoothCaret","checked");bindSetting("#settingSound","sound","checked");bindSetting("#settingFont","font");bindSetting("#settingLines","lines","number");bindSetting("#settingLiveWpm","liveWpm","checked");bindSetting("#settingLiveAcc","liveAcc","checked");bindSetting("#settingLiveProgress","liveProgress","checked");
