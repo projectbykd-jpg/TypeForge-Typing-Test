@@ -11,19 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
   <link rel="apple-touch-icon" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
-  <link rel="stylesheet" href="./styles.css?v=6.0.0">
+  <link rel="stylesheet" href="./styles.css?v=8.0.0">
 </head>
-<body>
+<body class="booting">
+  <div id="bootScreen" class="boot-screen"><img src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge"><span>loading workspace…</span></div>
   <div class="global-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div id="toastContainer" class="toast-container"></div>
 
-  <section id="authScreen" class="auth-screen">
+  <section id="authScreen" class="auth-screen hidden">
     <div class="auth-card">
-      <a class="brand auth-brand" href="#"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>TypeForge</span></a>
+      <a class="brand auth-brand" href="#"><img class="brand-logo brand-logo-full" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge"></a>
       <div class="auth-intro">
         <span class="tiny-label">TYPEFORGE</span>
         <h1>Train smarter.<br><span class="accent-text">Type smoother.</span></h1>
-        <p>A cleaner typing workspace inspired by the focus of Monkeytype and the clarity of 10FastFingers — with smart practice, daily cups, live races, and progress analytics.</p>
+        <p>A focused typing workspace with smart practice, daily cups, live races, and progress analytics.</p>
       </div>
       <div class="auth-tabs">
         <button class="auth-tab active" data-auth-tab="login">login</button>
@@ -52,7 +53,7 @@
   <div id="appShell" class="app hidden">
     <header class="app-header">
       <div class="header-inner">
-        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>TypeForge</span></a>
+        <a class="brand header-brand" href="#" data-nav="type"><img class="brand-logo brand-logo-full" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge"></a>
         <nav class="main-nav" aria-label="Main navigation">
           <button class="nav-link active" data-nav="type" title="Typing Test"><span class="nav-icon">⌨</span><span class="nav-label">Type</span></button>
           <button class="nav-link" data-nav="coach" title="Smart Coach"><span class="nav-icon">✦</span><span class="nav-label">Coach</span></button>
@@ -77,7 +78,7 @@
           <div>
             <span class="tiny-label">TYPEFORGE WORKSPACE</span>
             <h2>Fast, clean, focused typing.</h2>
-            <p>Built to feel calm like Monkeytype, but clear and familiar like 10FastFingers. Start typing fast, then jump into practice, racing, or daily competition without getting lost.</p>
+            <p>Start a focused typing test, review your accuracy, train weak keys, or jump into a room with friends. Everything important stays one click away.</p>
           </div>
           <div class="type-hero-actions">
             <button class="ghost-button" data-nav="practice">practice library</button>
@@ -200,17 +201,17 @@
         </div>
       </section>
 
-      <section id="page-competition" class="page"> class="page">
+      <section id="page-competition" class="page">
         <div class="section-heading competition-heading">
-          <div><span class="tiny-label">COMPETITION HUB</span><h2>Compete without the clutter.</h2><p>Join the all-player daily cup, or create a focused public/private room for your own group.</p></div>
+          <div><span class="tiny-label">COMPETITION</span><h2>Daily cup or private room.</h2><p>Use Daily Cup for the global challenge, or create a separate room and share its code with friends.</p></div>
           <div class="heading-actions"><button id="refreshGlobalCompetitionBtn" class="ghost-button">refresh cup</button><button id="refreshCompetitionBtn" class="ghost-button">refresh rooms</button></div>
         </div>
 
-        <div class="competition-feature-grid">
+        <div class="competition-feature-grid clean-competition-grid">
           <article class="global-cup-card">
             <div class="cup-glow"></div>
-            <div class="cup-topline"><span class="event-badge">GLOBAL · ALL PLAYERS</span><span id="globalCompetitionDate" class="event-date">today</span></div>
-            <div class="cup-copy"><span class="tiny-label">DAILY MAIN EVENT</span><h3>Global Daily Cup</h3><p>Every registered player gets the exact same 60-second English Top 200 passage. You have 3 attempts; only your best score appears on the board.</p></div>
+            <div class="cup-topline"><span class="event-badge">DAILY · ALL PLAYERS</span><span id="globalCompetitionDate" class="event-date">today</span></div>
+            <div class="cup-copy"><span class="tiny-label">DAILY CUP</span><h3>One passage. Three attempts.</h3><p>Everyone receives the same 60-second English Top 200 passage for the day. Your best verified score is used for the daily ranking.</p></div>
             <div class="cup-rules"><span>60 seconds</span><span>English</span><span>Top 200</span><span>Best of 3</span></div>
             <div class="cup-stats">
               <div><span>players</span><strong id="globalCompetitionPlayers">0</strong></div>
@@ -218,43 +219,60 @@
               <div><span>attempts</span><strong id="globalCompetitionAttempts">0/3</strong></div>
               <div class="cup-best"><span>your best</span><strong id="globalCompetitionBest">—</strong><small id="globalCompetitionBestMeta">complete an attempt to enter the ranking</small></div>
             </div>
-            <button id="startGlobalCompetitionBtn" class="accent-button cup-cta">start global attempt · 3 left</button>
+            <button id="startGlobalCompetitionBtn" class="accent-button cup-cta">start daily attempt</button>
           </article>
 
           <article class="panel global-board-panel">
-            <div class="panel-title compact-title"><div><span class="tiny-label">LIVE DAILY BOARD</span><h3>Top players today</h3></div><span class="fair-badge">same passage</span></div>
-            <div class="table-wrap global-board-wrap"><table class="global-board-table"><thead><tr><th>#</th><th>player</th><th>wpm</th><th>acc</th><th>time</th></tr></thead><tbody id="globalCompetitionBody"><tr><td colspan="5">loading global cup...</td></tr></tbody></table></div>
+            <div class="panel-title compact-title"><div><span class="tiny-label">DAILY BOARD</span><h3>Top players today</h3></div><span class="fair-badge">verified</span></div>
+            <div class="table-wrap global-board-wrap"><table class="global-board-table"><thead><tr><th>#</th><th>player</th><th>wpm</th><th>acc</th><th>date</th></tr></thead><tbody id="globalCompetitionBody"><tr><td colspan="5">loading daily cup…</td></tr></tbody></table></div>
           </article>
         </div>
-
         <div id="globalCompetitionArenaMount" class="arena-mount competition-arena"></div>
 
-        <div class="subsection-heading"><div><span class="tiny-label">ROOM COMPETITIONS</span><h3>Play with a selected group</h3><p>Create a public room for the community or a private room with a shareable code.</p></div></div>
-        <div id="competitionHome" class="two-col competition-room-grid">
+        <div class="subsection-heading"><div><span class="tiny-label">ROOM COMPETITION</span><h3>Create or join a room</h3><p>After creating or joining, TypeForge opens a dedicated room page for that code.</p></div></div>
+        <div class="two-col competition-room-grid">
           <article class="panel room-create-panel">
-            <div class="panel-title compact-title"><div><span class="tiny-label">CREATE ROOM</span><h3>New score competition</h3></div><span class="soft-icon">＋</span></div>
-            <p class="panel-help">Players type the same room passage independently. The highest verified WPM ranks first.</p>
+            <div class="panel-title compact-title"><div><span class="tiny-label">CREATE</span><h3>New competition room</h3></div><span class="soft-icon">＋</span></div>
+            <p class="panel-help">Each player gets the same room passage. Highest verified WPM ranks first.</p>
             <div class="form-grid">
-              <label class="span2"><span>room name</span><input id="compName" placeholder="Weekend Speed Cup"></label>
-              <label><span>visibility</span><select id="compVisibility"><option value="PUBLIC">public</option><option value="PRIVATE">private</option></select></label>
+              <label class="span2"><span>room name</span><input id="compName" placeholder="Weekend Speed Cup" maxlength="50"></label>
+              <label><span>visibility</span><select id="compVisibility"><option value="PRIVATE" selected>private</option><option value="PUBLIC">public</option></select></label>
               <label><span>max players</span><select id="compMax"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></label>
               <label><span>language</span><select id="compLanguage" class="language-select"></select></label>
-              <label><span>word pool</span><select id="compList"><option value="200">top 200</option><option value="1000">top 1K</option></select></label>
+              <label><span>word pool</span><select id="compList"><option value="200">top 200</option><option value="1000">top 1000</option></select></label>
               <label><span>duration</span><select id="compDuration"><option>30</option><option selected>60</option><option>120</option></select></label>
             </div>
-            <button id="createCompetitionBtn" class="accent-button full-button">create competition room</button>
+            <button id="createCompetitionBtn" class="accent-button full-button">create & open room</button>
           </article>
           <article class="panel room-browser-panel">
-            <div class="panel-title compact-title"><div><span class="tiny-label">JOIN & DISCOVER</span><h3>Competition rooms</h3></div><span class="soft-icon">⌁</span></div>
-            <label><span>private room code</span></label><div class="inline-form"><input id="compJoinCode" placeholder="ABC123" maxlength="8"><button id="joinCompetitionBtn" class="ghost-button">join code</button></div>
-            <div class="panel-divider"></div><div class="list-head"><span class="tiny-label">PUBLIC ROOMS</span><small>tap join to enter</small></div><div id="competitionList" class="room-list muted-empty">loading...</div>
+            <div class="panel-title compact-title"><div><span class="tiny-label">JOIN</span><h3>Enter room code</h3></div><span class="soft-icon">⌁</span></div>
+            <p class="panel-help">Ask the room owner for the six-character code.</p>
+            <div class="inline-form"><input id="compJoinCode" placeholder="ABC123" maxlength="6"><button id="joinCompetitionBtn" class="accent-button">join room</button></div>
+            <div class="panel-divider"></div><div class="list-head"><span class="tiny-label">PUBLIC ROOMS</span><small>available rooms</small></div><div id="competitionList" class="room-list muted-empty">loading…</div>
           </article>
         </div>
-        <div id="competitionRoom" class="hidden">
-          <article class="panel room-head"><div><span class="tiny-label">ACTIVE COMPETITION</span><h2 id="compRoomName">room</h2><p>share code <button id="compRoomCode" class="room-code">------</button></p></div><div><button id="startCompetitionTestBtn" class="accent-button">start attempt</button><button id="leaveCompetitionBtn" class="ghost-button">leave room</button></div></article>
-          <article class="panel"><div class="panel-title compact-title"><div><span class="tiny-label">ROOM LEADERBOARD</span><h3>Players</h3></div><span class="fair-badge">verified scores</span></div><div id="competitionPlayers" class="players"></div></article>
-          <div id="competitionArenaMount" class="arena-mount"></div>
+      </section>
+
+      <section id="page-competition-room" class="page room-page">
+        <div class="room-page-top">
+          <button id="backCompetitionHubBtn" class="ghost-button">← competition hub</button>
+          <div class="room-live-status"><i></i><span id="compRoomStatus">open</span></div>
         </div>
+        <article class="room-hero panel">
+          <div class="room-hero-main"><span class="tiny-label">COMPETITION ROOM</span><h2 id="compRoomName">Room</h2><p>Room code</p><button id="compRoomCode" class="room-code room-code-large">------</button><small>Click the code to copy and share it with friends.</small></div>
+          <div class="room-hero-meta">
+            <div><span>language</span><strong id="compRoomLanguage">—</strong></div>
+            <div><span>duration</span><strong id="compRoomDuration">—</strong></div>
+            <div><span>players</span><strong id="compRoomCount">0</strong></div>
+            <div><span>host</span><strong id="compRoomHost">—</strong></div>
+          </div>
+          <div class="room-hero-actions"><button id="startCompetitionTestBtn" class="accent-button">start my attempt</button><button id="leaveCompetitionBtn" class="ghost-button danger-button">leave room</button></div>
+        </article>
+        <div class="room-content-grid">
+          <article class="panel"><div class="panel-title compact-title"><div><span class="tiny-label">PLAYERS</span><h3>Room leaderboard</h3></div><span class="fair-badge">live</span></div><div id="competitionPlayers" class="players"></div></article>
+          <article class="panel room-help-card"><span class="tiny-label">HOW IT WORKS</span><div class="room-step"><b>1</b><span>Share the room code.</span></div><div class="room-step"><b>2</b><span>Friends join this dedicated room page.</span></div><div class="room-step"><b>3</b><span>Each player starts one attempt on the same passage.</span></div><div class="room-step"><b>4</b><span>Verified WPM and accuracy update the room board.</span></div></article>
+        </div>
+        <div id="competitionArenaMount" class="arena-mount room-arena"></div>
       </section>
 
       <section id="page-practice" class="page">
@@ -267,18 +285,18 @@
       </section>
 
       <section id="page-multiplayer" class="page">
-        <div class="section-heading"><div><span class="tiny-label">MULTIPLAYER</span><h2>Live typing race</h2><p>Ready up, wait for the host countdown, then race on the same passage.</p></div><button id="refreshMultiBtn" class="ghost-button">refresh</button></div>
-        <div id="multiHome" class="two-col">
-          <article class="panel"><span class="tiny-label">CREATE RACE</span><h3>New multiplayer room</h3><div class="form-grid"><label class="span2"><span>room name</span><input id="multiName" placeholder="Night Sprint"></label><label><span>visibility</span><select id="multiVisibility"><option value="PUBLIC">public</option><option value="PRIVATE">private</option></select></label><label><span>players</span><select id="multiMax"><option>2</option><option selected>5</option><option>10</option></select></label><label><span>language</span><select id="multiLanguage" class="language-select"></select></label><label><span>word list</span><select id="multiListSize"><option value="200">top 200</option><option value="1000">1k</option></select></label><label><span>duration</span><select id="multiDuration"><option>30</option><option selected>60</option><option>120</option></select></label></div><button id="createMultiBtn" class="accent-button">create race</button></article>
-          <article class="panel"><span class="tiny-label">JOIN RACE</span><h3>Room code</h3><div class="inline-form"><input id="multiJoinCode" placeholder="ABC123" maxlength="8"><button id="joinMultiBtn" class="ghost-button">join</button></div><div class="panel-divider"></div><span class="tiny-label">PUBLIC RACES</span><div id="multiList" class="room-list muted-empty">loading...</div></article>
+        <div class="section-heading"><div><span class="tiny-label">LIVE RACE</span><h2>Race with friends in real time.</h2><p>Create a room, share the code, wait until everyone is ready, then the host starts one synchronized countdown.</p></div><button id="refreshMultiBtn" class="ghost-button">refresh rooms</button></div>
+        <div class="race-steps"><div><b>1</b><span>Create room</span></div><div><b>2</b><span>Share code</span></div><div><b>3</b><span>Everyone ready</span></div><div><b>4</b><span>Host starts race</span></div></div>
+        <div id="multiHome" class="room-action-grid">
+          <article class="panel"><span class="tiny-label">CREATE RACE</span><h3>New private race</h3><p class="panel-help">Private is recommended when playing with friends. You can switch to public if you want other users to discover the room.</p><div class="form-grid"><label class="span2"><span>room name</span><input id="multiName" placeholder="Friday Night Race" maxlength="50"></label><label><span>visibility</span><select id="multiVisibility"><option value="PRIVATE" selected>private</option><option value="PUBLIC">public</option></select></label><label><span>players</span><select id="multiMax"><option>2</option><option selected>5</option><option>10</option></select></label><label><span>language</span><select id="multiLanguage" class="language-select"></select></label><label><span>word list</span><select id="multiListSize"><option value="200">top 200</option><option value="1000">top 1000</option></select></label><label><span>duration</span><select id="multiDuration"><option>30</option><option selected>60</option><option>120</option></select></label></div><button id="createMultiBtn" class="accent-button full-button">create race room</button></article>
+          <article class="panel"><span class="tiny-label">JOIN RACE</span><h3>Enter room code</h3><p class="panel-help">Paste the six-character code sent by your friend.</p><div class="join-code-large"><input id="multiJoinCode" placeholder="ABC123" maxlength="6"><button id="joinMultiBtn" class="accent-button">join</button></div><div class="panel-divider"></div><div class="list-head"><span class="tiny-label">PUBLIC RACES</span><small>open rooms</small></div><div id="multiList" class="room-list muted-empty">loading…</div></article>
         </div>
         <div id="multiRoom" class="hidden">
-          <article class="panel room-head"><div><span class="tiny-label">MULTIPLAYER LOBBY</span><h2 id="multiRoomName">room</h2><p>code <button id="multiRoomCode" class="room-code">------</button></p></div><div><button id="multiReadyBtn" class="ghost-button">i'm ready</button><button id="multiStartBtn" class="accent-button hidden">start race</button><button id="leaveMultiBtn" class="ghost-button">leave view</button></div></article>
-          <article class="panel"><div id="multiCountdown" class="countdown hidden">3</div><div id="multiPlayers" class="players"></div></article>
-          <div id="multiArenaMount" class="arena-mount"></div>
+          <article class="panel race-lobby-head"><div><span class="tiny-label">RACE LOBBY</span><h2 id="multiRoomName">room</h2><p>Share code <button id="multiRoomCode" class="room-code room-code-large">------</button></p></div><div class="room-head-actions"><button id="multiReadyBtn" class="ghost-button">i'm ready</button><button id="multiStartBtn" class="accent-button hidden">start race</button><button id="leaveMultiBtn" class="ghost-button danger-button">leave room</button></div></article>
+          <article class="panel race-player-panel"><div class="panel-title compact-title"><div><span class="tiny-label">PLAYERS</span><h3>Ready status & live progress</h3></div><span class="fair-badge">same passage</span></div><div id="multiCountdown" class="countdown hidden">3</div><div id="multiPlayers" class="players"></div></article>
+          <div id="multiArenaMount" class="arena-mount race-arena"></div>
         </div>
       </section>
-
 
       <section id="page-coach" class="page">
         <div class="section-heading coach-heading">
@@ -320,7 +338,7 @@
 
       <section id="page-stats" class="page">
         <div class="section-heading"><div><span class="tiny-label">ACCOUNT</span><h2>Your typing profile</h2><p>Progress, records, XP and achievements.</p></div></div>
-        <div class="stats-top"><article class="profile-card panel"><div id="profileAvatar" class="profile-avatar">U</div><div><h3 id="profileName">user</h3><p id="profileUserId">@userid</p><small>joined <span id="profileJoined">—</span></small></div></article><article class="stat-box"><span>best wpm</span><strong id="statBestWpm">0</strong></article><article class="stat-box"><span>average</span><strong id="statAvgWpm">0</strong></article><article class="stat-box"><span>accuracy</span><strong><b id="statAccuracy">0</b>%</strong></article><article class="stat-box"><span>tests</span><strong id="statTests">0</strong></article></div>
+        <div class="stats-top"><article class="profile-card panel profile-editor-card"><div class="profile-avatar-wrap"><div id="profileAvatar" class="profile-avatar">U</div><button id="profileAvatarEditBtn" class="avatar-edit-button" title="Change profile photo">✎</button></div><div class="profile-main-copy"><h3 id="profileName">user</h3><p id="profileUserId">@userid</p><small>joined <span id="profileJoined">—</span></small><div class="profile-photo-actions"><button id="uploadAvatarBtn" class="ghost-button compact">upload photo</button><button id="removeAvatarBtn" class="ghost-button compact danger-button">remove</button><input id="avatarFileInput" class="hidden" type="file" accept="image/png,image/jpeg,image/webp"></div><small class="avatar-note">PNG/JPG/WebP · automatically resized before saving</small></div></article><article class="stat-box"><span>best wpm</span><strong id="statBestWpm">0</strong></article><article class="stat-box"><span>average</span><strong id="statAvgWpm">0</strong></article><article class="stat-box"><span>accuracy</span><strong><b id="statAccuracy">0</b>%</strong></article><article class="stat-box"><span>tests</span><strong id="statTests">0</strong></article></div>
         <div class="stats-grid"><article class="panel performance-panel"><div class="panel-title"><div><span class="tiny-label">PERFORMANCE</span><h3>Recent WPM</h3></div></div><canvas id="performanceChart"></canvas></article><article class="panel xp-panel"><span class="tiny-label">LEVEL</span><div class="level-big"><span>lv</span><strong id="levelNumber">1</strong></div><p><b id="pointsTotal">0</b> total XP</p><div class="xp-line"><span id="xpBar"></span></div><small id="xpText">0 / 500 xp</small></article></div>
         <article class="panel achievement-panel"><span class="tiny-label">ACHIEVEMENTS</span><div id="achievementGrid" class="achievement-grid"></div></article>
         <article class="panel table-panel history-panel"><div class="panel-title"><div><span class="tiny-label">HISTORY</span><h3>Recent attempts</h3></div><button id="refreshHistoryBtn" class="ghost-button">refresh</button></div><div class="table-wrap"><table><thead><tr><th>date</th><th>wpm</th><th>raw</th><th>acc</th><th>errors</th><th>mode</th><th>language</th><th>xp</th></tr></thead><tbody id="historyBody"></tbody></table></div></article>
@@ -341,7 +359,7 @@
     <footer class="app-footer"><span>TypeForge</span><span id="apiFooter">api checking</span><button id="openCommandFooter">commands</button></footer>
   </div>
 
-  <div id="languageModal" class="modal-backdrop hidden"><div class="modal-card"><div class="modal-head"><div><span class="tiny-label">LANGUAGE</span><h3>Choose language</h3></div><button class="icon-button modal-close">×</button></div><input id="languageSearch" class="modal-search" placeholder="search languages..."><div id="languageGrid" class="language-grid"></div></div></div>
+  <div id="languageModal" class="modal-backdrop hidden"><div class="modal-card language-modal-card"><div class="modal-head"><div><span class="tiny-label">LANGUAGE</span><h3>Choose typing language</h3><p>Word lists use common vocabulary for the selected language.</p></div><button class="icon-button modal-close">×</button></div><input id="languageSearch" class="modal-search" placeholder="Search by English or native language name…"><div id="languageGrid" class="language-grid"></div></div></div>
   <div id="commandPalette" class="command-backdrop hidden"><div class="command-card"><div class="command-search-row"><span>›</span><input id="commandSearch" placeholder="search commands..."><kbd>esc</kbd></div><div id="commandResults" class="command-results"></div></div></div>
 
   <template id="arenaTemplate">
@@ -360,7 +378,7 @@
     </div>
   </template>
 
-  <script src="./config.js?v=6.0.0"></script>
-  <script src="./app.js?v=6.0.0"></script>
+  <script src="./config.js?v=8.0.0"></script>
+  <script src="./app.js?v=8.0.0"></script>
 </body>
 </html>
