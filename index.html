@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#111318">
-  <meta name="description" content="TypeForge — premium typing platform with global competition, live multiplayer, smart coaching and deep analytics.">
+  <meta name="description" content="TypeForge — modern typing test with focused practice, daily competition, live racing, and smart coaching.">
   <title>TypeForge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
   <link rel="apple-touch-icon" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
-  <link rel="stylesheet" href="./styles.css?v=6.0.0">
+  <link rel="stylesheet" href="./styles.css?v=typeforge">
 </head>
 <body>
   <div class="global-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -19,11 +19,11 @@
 
   <section id="authScreen" class="auth-screen">
     <div class="auth-card">
-      <a class="brand auth-brand" href="#"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span></a>
+      <a class="brand auth-brand" href="#"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>TypeForge</span></a>
       <div class="auth-intro">
-        <span class="tiny-label">TypeForge</span>
+        <span class="tiny-label">TYPEFORGE</span>
         <h1>Train smarter.<br><span class="accent-text">Type smoother.</span></h1>
-        <p>A smarter typing workspace with adaptive practice, live races, deep analytics and a coach that learns from your mistakes.</p>
+        <p>A cleaner typing workspace inspired by the focus of Monkeytype and the clarity of 10FastFingers — with smart practice, daily cups, live races, and progress analytics.</p>
       </div>
       <div class="auth-tabs">
         <button class="auth-tab active" data-auth-tab="login">login</button>
@@ -52,73 +52,155 @@
   <div id="appShell" class="app hidden">
     <header class="app-header">
       <div class="header-inner">
-        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span><small>pro v6</small></a>
+        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>TypeForge</span></a>
         <nav class="main-nav" aria-label="Main navigation">
           <button class="nav-link active" data-nav="type" title="Typing Test"><span class="nav-icon">⌨</span><span class="nav-label">Type</span></button>
-          <button class="nav-link" data-nav="coach" title="Smart Coach"><span class="nav-icon">✦</span><span class="nav-label">Coach</span></button>
-          <button class="nav-link nav-featured" data-nav="competition" title="Competition"><span class="nav-icon">🏆</span><span class="nav-label">Competition</span></button>
-          <button class="nav-link" data-nav="multiplayer" title="Multiplayer"><span class="nav-icon">⚔</span><span class="nav-label">Race</span></button>
           <button class="nav-link" data-nav="practice" title="Text Practice"><span class="nav-icon">▤</span><span class="nav-label">Practice</span></button>
-          <button class="nav-link" data-nav="leaderboard" title="Leaderboard"><span class="nav-icon">♛</span><span class="nav-label">Ranks</span></button>
+          <button class="nav-link" data-nav="coach" title="Smart Coach"><span class="nav-icon">✦</span><span class="nav-label">Coach</span></button>
+          <button class="nav-link" data-nav="multiplayer" title="Live Race"><span class="nav-icon">⚔</span><span class="nav-label">Race</span></button>
+          <button class="nav-link nav-featured" data-nav="competition" title="Competition"><span class="nav-icon">🏆</span><span class="nav-label">Competition</span></button>
           <button class="nav-link" data-nav="stats" title="Stats"><span class="nav-icon">▥</span><span class="nav-label">Stats</span></button>
-          <button class="nav-link" data-nav="settings" title="Settings"><span class="nav-icon">⚙</span><span class="nav-label">Settings</span></button>
         </nav>
         <div class="header-user">
           <span class="level-mini">lv <b id="headerLevel">1</b></span>
+          <button class="header-icon-button" data-nav="leaderboard" title="Leaderboard" aria-label="Leaderboard">♛</button>
+          <button class="header-icon-button" data-nav="settings" title="Settings" aria-label="Settings">⚙</button>
           <button class="user-button" data-nav="stats"><span id="headerAvatar">U</span><b id="headerName">user</b></button>
-          <button id="logoutBtn" class="icon-button" title="Logout">↪</button>
+          <button id="logoutBtn" class="header-icon-button" title="Logout" aria-label="Logout">↪</button>
         </div>
       </div>
     </header>
 
     <main class="content">
       <section id="page-type" class="page active">
-        <div class="typing-shell">
-          <div id="typingConfig" class="typing-config">
-            <div class="config-bar">
-              <button id="togglePunctuation" class="config-chip">@ punctuation</button>
-              <button id="toggleNumbers" class="config-chip"># numbers</button>
-              <span class="config-separator"></span>
-              <button class="config-chip mode-chip active" data-mode="time">time</button>
-              <button class="config-chip mode-chip" data-mode="words">words</button>
-              <button class="config-chip mode-chip" data-mode="quote">quote</button>
-              <button class="config-chip mode-chip" data-mode="zen">zen</button>
-              <button class="config-chip mode-chip" data-mode="custom">custom</button>
-              <span class="config-separator"></span>
-              <button id="languageButton" class="config-chip">🌐 <span id="activeLanguageLabel">english</span></button>
-            </div>
-            <div id="modeOptions" class="mode-options"></div>
-            <div id="customModePanel" class="custom-mode-panel hidden">
-              <div class="custom-grid">
-                <label><span>custom text / word list</span><textarea id="customTextInput" maxlength="12000" placeholder="type or paste your custom words/text here..."></textarea></label>
-                <label><span>duration — 0 = untimed</span><input id="customDurationInput" type="number" min="0" max="600" value="60"></label>
+        <div class="type-hero">
+          <div>
+            <span class="tiny-label">TYPEFORGE WORKSPACE</span>
+            <h2>Fast, clean, focused typing.</h2>
+            <p>Built to feel calm like Monkeytype, but clear and familiar like 10FastFingers. Start typing fast, then jump into practice, racing, or daily competition without getting lost.</p>
+          </div>
+          <div class="type-hero-actions">
+            <button class="ghost-button" data-nav="practice">practice library</button>
+            <button class="ghost-button" data-nav="competition">daily cup</button>
+          </div>
+        </div>
+
+        <div class="typing-home-grid">
+          <aside class="type-side type-side-left">
+            <div id="smartStrip" class="smart-strip smart-strip-card">
+              <div class="smart-orb">✦</div>
+              <div class="smart-strip-copy">
+                <span>smart coach</span>
+                <strong id="smartStripTitle">analyzing your typing...</strong>
+                <small id="smartStripText">Complete a test and TypeForge will adapt your next drill.</small>
               </div>
-              <button id="launchCustomBtn" class="small-accent-button">use custom text</button>
+              <div class="smart-strip-actions">
+                <button id="smartPracticeQuickBtn" class="smart-button">smart practice</button>
+                <button class="ghost-button" data-nav="coach">open coach</button>
+              </div>
+            </div>
+
+            <article class="panel quick-menu-card">
+              <div class="panel-title compact-title">
+                <div><span class="tiny-label">QUICK ACCESS</span><h3>Go where you need</h3></div>
+              </div>
+              <div class="quick-link-stack">
+                <button class="ghost-button full-button" data-nav="practice">community practice texts</button>
+                <button class="ghost-button full-button" data-nav="multiplayer">live race rooms</button>
+                <button class="ghost-button full-button" data-nav="leaderboard">global leaderboard</button>
+              </div>
+            </article>
+          </aside>
+
+          <div class="type-center">
+            <div class="typing-shell">
+              <div id="typingConfig" class="typing-config">
+                <div class="config-bar">
+                  <button id="togglePunctuation" class="config-chip">@ punctuation</button>
+                  <button id="toggleNumbers" class="config-chip"># numbers</button>
+                  <span class="config-separator"></span>
+                  <button class="config-chip mode-chip active" data-mode="time">time</button>
+                  <button class="config-chip mode-chip" data-mode="words">words</button>
+                  <button class="config-chip mode-chip" data-mode="quote">quote</button>
+                  <button class="config-chip mode-chip" data-mode="zen">zen</button>
+                  <button class="config-chip mode-chip" data-mode="custom">custom</button>
+                  <span class="config-separator"></span>
+                  <button id="languageButton" class="config-chip">🌐 <span id="activeLanguageLabel">english</span></button>
+                </div>
+                <div id="modeOptions" class="mode-options"></div>
+                <div id="customModePanel" class="custom-mode-panel hidden">
+                  <div class="custom-grid">
+                    <label><span>custom text / word list</span><textarea id="customTextInput" maxlength="12000" placeholder="type or paste your custom words/text here..."></textarea></label>
+                    <label><span>duration — 0 = untimed</span><input id="customDurationInput" type="number" min="0" max="600" value="60"></label>
+                  </div>
+                  <button id="launchCustomBtn" class="small-accent-button">use custom text</button>
+                </div>
+              </div>
+
+              <div id="mainArenaMount" class="arena-mount main-type-arena"></div>
+              <div id="idleTypingHint" class="idle-typing-hint">
+                <p>click the text area to focus</p>
+                <div><span><kbd>tab</kbd> + <kbd>enter</kbd> restart</span><span><kbd>esc</kbd> commands</span><span><kbd>ctrl</kbd> + <kbd>enter</kbd> quick restart</span></div>
+              </div>
             </div>
           </div>
 
-          <div id="smartStrip" class="smart-strip">
-            <div class="smart-orb">✦</div>
-            <div class="smart-strip-copy">
-              <span>smart coach</span>
-              <strong id="smartStripTitle">analyzing your typing...</strong>
-              <small id="smartStripText">Complete a test and TypeForge will adapt your next drill.</small>
-            </div>
-            <div class="smart-strip-actions">
-              <button id="smartPracticeQuickBtn" class="smart-button">smart practice</button>
-              <button class="ghost-button" data-nav="coach">open coach</button>
-            </div>
-          </div>
+          <aside class="type-side type-side-right">
+            <article class="panel type-daily-card">
+              <div class="panel-title compact-title">
+                <div><span class="tiny-label">DAILY CUP</span><h3>Challenge today</h3></div>
+                <span class="fair-badge">same passage</span>
+              </div>
+              <div class="type-daily-metrics">
+                <div><span>players</span><strong id="typeCupPlayers">0</strong></div>
+                <div><span>your rank</span><strong id="typeCupRank">—</strong></div>
+                <div><span>attempts</span><strong id="typeCupAttempts">0/3</strong></div>
+                <div class="type-daily-best"><span>best</span><strong id="typeCupBest">—</strong><small id="typeCupMeta">complete an attempt to join the board</small></div>
+              </div>
+              <div class="quick-link-stack">
+                <button id="quickStartCupBtn" class="accent-button full-button">start daily cup</button>
+                <button class="ghost-button full-button" data-nav="competition">open competition hub</button>
+              </div>
+            </article>
 
-          <div id="mainArenaMount" class="arena-mount"></div>
-          <div id="idleTypingHint" class="idle-typing-hint">
-            <p>click the text area to focus</p>
-            <div><span><kbd>tab</kbd> + <kbd>enter</kbd> restart</span><span><kbd>esc</kbd> commands</span><span><kbd>ctrl</kbd> + <kbd>enter</kbd> quick restart</span></div>
-          </div>
+            <article class="panel quick-profile-card">
+              <div class="panel-title compact-title">
+                <div><span class="tiny-label">PROFILE SNAPSHOT</span><h3>Your progress</h3></div>
+              </div>
+              <div class="quick-stat-grid">
+                <div class="quick-stat-box"><span>level</span><strong id="typeQuickLevel">1</strong></div>
+                <div class="quick-stat-box"><span>best wpm</span><strong id="typeQuickBest">0</strong></div>
+                <div class="quick-stat-box"><span>average</span><strong id="typeQuickAverage">0</strong></div>
+                <div class="quick-stat-box"><span>accuracy</span><strong id="typeQuickAccuracy">0%</strong></div>
+                <div class="quick-stat-box quick-stat-wide"><span>tests completed</span><strong id="typeQuickTests">0</strong></div>
+              </div>
+            </article>
+          </aside>
+        </div>
+
+        <div class="type-bottom-grid">
+          <article class="panel type-summary-panel">
+            <div class="panel-title compact-title">
+              <div><span class="tiny-label">RECENT RESULTS</span><h3>Last attempts</h3></div>
+              <button class="ghost-button compact" data-nav="stats">view history</button>
+            </div>
+            <div id="typeRecentList" class="type-recent-list muted-empty">Complete a few tests and your recent results will appear here.</div>
+          </article>
+
+          <article class="panel type-summary-panel">
+            <div class="panel-title compact-title">
+              <div><span class="tiny-label">WHAT NEXT</span><h3>Suggested flow</h3></div>
+            </div>
+            <div class="type-flow-list">
+              <div class="type-flow-item"><b>1</b><div><strong>Warm up with a normal test</strong><small>Use 30s or 60s time mode to find your real pace.</small></div></div>
+              <div class="type-flow-item"><b>2</b><div><strong>Repair weak words</strong><small>Open Smart Coach after a few runs and practice what slows you down.</small></div></div>
+              <div class="type-flow-item"><b>3</b><div><strong>Compete when ready</strong><small>Jump into Daily Cup or Live Race once your rhythm feels stable.</small></div></div>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section id="page-competition" class="page">
+      <section id="page-competition" class="page"> class="page">
         <div class="section-heading competition-heading">
           <div><span class="tiny-label">COMPETITION HUB</span><h2>Compete without the clutter.</h2><p>Join the all-player daily cup, or create a focused public/private room for your own group.</p></div>
           <div class="heading-actions"><button id="refreshGlobalCompetitionBtn" class="ghost-button">refresh cup</button><button id="refreshCompetitionBtn" class="ghost-button">refresh rooms</button></div>
@@ -246,12 +328,21 @@
 
       <section id="page-settings" class="page">
         <div class="section-heading"><div><span class="tiny-label">SETTINGS</span><h2>Make it yours</h2><p>Changes apply immediately and are stored in this browser.</p></div><button id="resetSettingsBtn" class="ghost-button">reset all</button></div>
-        <div class="settings-stack">
-          <article class="settings-section panel"><div class="setting-section-title"><span>01</span><div><h3>behavior</h3><p>Control how strict the test should be.</p></div></div><div class="setting-row"><div><b>difficulty</b><small>normal allows errors; expert fails on an incorrect completed word; master fails on the first wrong key.</small></div><select id="settingDifficulty"><option value="normal">normal</option><option value="expert">expert</option><option value="master">master</option></select></div><div class="setting-row"><div><b>minimum wpm</b><small>0 disables the limit. Checked after the first 5 seconds.</small></div><input id="settingMinWpm" type="number" min="0" max="300" value="0"></div><div class="setting-row"><div><b>minimum accuracy</b><small>0 disables the limit.</small></div><input id="settingMinAccuracy" type="number" min="0" max="100" value="0"></div><div class="setting-row"><div><b>stop on error</b><small>Immediately fail the run on any wrong character.</small></div><label class="switch"><input id="settingStopError" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>blind mode</b><small>Hide error coloring while you type.</small></div><label class="switch"><input id="settingBlind" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>freedom mode</b><small>Allow backspace across previously completed words.</small></div><label class="switch"><input id="settingFreedom" type="checkbox"><span></span></label></div></article>
-          <article class="settings-section panel"><div class="setting-section-title"><span>02</span><div><h3>input & sound</h3><p>Customize caret movement and typing feedback.</p></div></div><div class="setting-row"><div><b>caret style</b><small>Visual marker for your current character.</small></div><select id="settingCaret"><option value="line">line</option><option value="block">block</option><option value="underline">underline</option></select></div><div class="setting-row"><div><b>smooth caret</b><small>Animate caret movement between characters.</small></div><label class="switch"><input id="settingSmoothCaret" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>mechanical sound</b><small>Generate a short keyboard click using Web Audio.</small></div><label class="switch"><input id="settingSound" type="checkbox"><span></span></label></div></article>
-          <article class="settings-section panel"><div class="setting-section-title"><span>03</span><div><h3>look & feel</h3><p>Font, visible lines and live metrics.</p></div></div><div class="setting-row"><div><b>font</b><small>Typing text font family.</small></div><select id="settingFont"><option value="'JetBrains Mono',monospace">JetBrains Mono</option><option value="Inter,sans-serif">Inter</option><option value="Georgia,serif">Georgia</option><option value="'Courier New',monospace">Courier New</option><option value="monospace">System Mono</option></select></div><div class="setting-row"><div><b>font size</b><small><span id="fontSizeLabel">30px</span></small></div><input id="settingFontSize" type="range" min="18" max="42" value="30"></div><div class="setting-row"><div><b>visible lines</b><small>How many lines of target text remain visible.</small></div><select id="settingLines"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select></div><div class="setting-row"><div><b>live wpm</b></div><label class="switch"><input id="settingLiveWpm" type="checkbox" checked><span></span></label></div><div class="setting-row"><div><b>live accuracy</b></div><label class="switch"><input id="settingLiveAcc" type="checkbox" checked><span></span></label></div><div class="setting-row"><div><b>live progress</b></div><label class="switch"><input id="settingLiveProgress" type="checkbox" checked><span></span></label></div></article>
-          <article class="settings-section panel"><div class="setting-section-title"><span>04</span><div><h3>theme</h3><p>Switch the entire interface instantly.</p></div></div><div id="themeGrid" class="theme-grid"></div><div class="custom-colors"><label><span>background</span><input id="customBg" type="color" value="#111318"></label><label><span>main</span><input id="customMain" type="color" value="#e2b714"></label><label><span>text</span><input id="customTextColor" type="color" value="#d9dee8"></label><label><span>sub</span><input id="customSub" type="color" value="#646b78"></label><label><span>error</span><input id="customError" type="color" value="#ca4754"></label><button id="applyCustomThemeBtn" class="ghost-button">apply custom</button></div></article>
-          <article class="settings-section panel"><div class="setting-section-title"><span>05</span><div><h3>backup</h3><p>Export or import your local TypeForge preferences.</p></div></div><div class="settings-actions"><button id="exportSettingsBtn" class="ghost-button">export settings</button><button id="importSettingsBtn" class="ghost-button">import settings</button><input id="settingsFileInput" type="file" accept="application/json" class="hidden"></div></article>
+        <div class="settings-layout">
+          <aside class="settings-nav panel" aria-label="Settings categories">
+            <button class="settings-tab active" data-settings-tab="behavior"><span>01</span><div><b>Behavior</b><small>difficulty & rules</small></div></button>
+            <button class="settings-tab" data-settings-tab="input"><span>02</span><div><b>Input & Sound</b><small>caret & feedback</small></div></button>
+            <button class="settings-tab" data-settings-tab="look"><span>03</span><div><b>Look & Feel</b><small>font & live metrics</small></div></button>
+            <button class="settings-tab" data-settings-tab="theme"><span>04</span><div><b>Theme</b><small>colors & presets</small></div></button>
+            <button class="settings-tab" data-settings-tab="backup"><span>05</span><div><b>Backup</b><small>export & import</small></div></button>
+          </aside>
+          <div class="settings-stack">
+          <article class="settings-section panel active" data-settings-panel="behavior"><div class="setting-section-title"><span>01</span><div><h3>behavior</h3><p>Control how strict the test should be.</p></div></div><div class="setting-row"><div><b>difficulty</b><small>normal allows errors; expert fails on an incorrect completed word; master fails on the first wrong key.</small></div><select id="settingDifficulty"><option value="normal">normal</option><option value="expert">expert</option><option value="master">master</option></select></div><div class="setting-row"><div><b>minimum wpm</b><small>0 disables the limit. Checked after the first 5 seconds.</small></div><input id="settingMinWpm" type="number" min="0" max="300" value="0"></div><div class="setting-row"><div><b>minimum accuracy</b><small>0 disables the limit.</small></div><input id="settingMinAccuracy" type="number" min="0" max="100" value="0"></div><div class="setting-row"><div><b>stop on error</b><small>Immediately fail the run on any wrong character.</small></div><label class="switch"><input id="settingStopError" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>blind mode</b><small>Hide error coloring while you type.</small></div><label class="switch"><input id="settingBlind" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>freedom mode</b><small>Allow backspace across previously completed words.</small></div><label class="switch"><input id="settingFreedom" type="checkbox"><span></span></label></div></article>
+          <article class="settings-section panel" data-settings-panel="input"><div class="setting-section-title"><span>02</span><div><h3>input & sound</h3><p>Customize caret movement and typing feedback.</p></div></div><div class="setting-row"><div><b>caret style</b><small>Visual marker for your current character.</small></div><select id="settingCaret"><option value="line">line</option><option value="block">block</option><option value="underline">underline</option></select></div><div class="setting-row"><div><b>smooth caret</b><small>Animate caret movement between characters.</small></div><label class="switch"><input id="settingSmoothCaret" type="checkbox"><span></span></label></div><div class="setting-row"><div><b>mechanical sound</b><small>Generate a short keyboard click using Web Audio.</small></div><label class="switch"><input id="settingSound" type="checkbox"><span></span></label></div></article>
+          <article class="settings-section panel" data-settings-panel="look"><div class="setting-section-title"><span>03</span><div><h3>look & feel</h3><p>Font, visible lines and live metrics.</p></div></div><div class="setting-row"><div><b>font</b><small>Typing text font family.</small></div><select id="settingFont"><option value="'JetBrains Mono',monospace">JetBrains Mono</option><option value="Inter,sans-serif">Inter</option><option value="Georgia,serif">Georgia</option><option value="'Courier New',monospace">Courier New</option><option value="monospace">System Mono</option></select></div><div class="setting-row"><div><b>font size</b><small><span id="fontSizeLabel">30px</span></small></div><input id="settingFontSize" type="range" min="18" max="42" value="30"></div><div class="setting-row"><div><b>visible lines</b><small>How many lines of target text remain visible.</small></div><select id="settingLines"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select></div><div class="setting-row"><div><b>live wpm</b></div><label class="switch"><input id="settingLiveWpm" type="checkbox" checked><span></span></label></div><div class="setting-row"><div><b>live accuracy</b></div><label class="switch"><input id="settingLiveAcc" type="checkbox" checked><span></span></label></div><div class="setting-row"><div><b>live progress</b></div><label class="switch"><input id="settingLiveProgress" type="checkbox" checked><span></span></label></div></article>
+          <article class="settings-section panel" data-settings-panel="theme"><div class="setting-section-title"><span>04</span><div><h3>theme</h3><p>Switch the entire interface instantly.</p></div></div><div id="themeGrid" class="theme-grid"></div><div class="custom-colors"><label><span>background</span><input id="customBg" type="color" value="#111318"></label><label><span>main</span><input id="customMain" type="color" value="#e2b714"></label><label><span>text</span><input id="customTextColor" type="color" value="#d9dee8"></label><label><span>sub</span><input id="customSub" type="color" value="#646b78"></label><label><span>error</span><input id="customError" type="color" value="#ca4754"></label><button id="applyCustomThemeBtn" class="ghost-button">apply custom</button></div></article>
+          <article class="settings-section panel" data-settings-panel="backup"><div class="setting-section-title"><span>05</span><div><h3>backup</h3><p>Export or import your local TypeForge preferences.</p></div></div><div class="settings-actions"><button id="exportSettingsBtn" class="ghost-button">export settings</button><button id="importSettingsBtn" class="ghost-button">import settings</button><input id="settingsFileInput" type="file" accept="application/json" class="hidden"></div></article>
+          </div>
         </div>
       </section>
     </main>
@@ -278,7 +369,7 @@
     </div>
   </template>
 
-  <script src="./config.js?v=6.0.0"></script>
-  <script src="./app.js?v=6.0.0"></script>
+  <script src="./config.js?v=typeforge"></script>
+  <script src="./app.js?v=typeforge"></script>
 </body>
 </html>
