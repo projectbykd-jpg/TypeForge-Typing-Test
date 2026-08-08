@@ -5,7 +5,7 @@ const CONFIG=window.TYPEFORGE_CONFIG||{};
 const API_URL=CONFIG.API_URL||"";
 const POLL_MS=Number(CONFIG.POLL_MS||1800);
 const TOKEN_KEY="typeforge_session_token";
-const SETTINGS_KEY="typeforge_v4_settings";
+const SETTINGS_KEY="typeforge_v5_settings";
 
 const LANGUAGES=[
 ["english","english"],["indonesian","indonesia"],["spanish","español"],["french","français"],["german","deutsch"],
@@ -37,7 +37,7 @@ const DEFAULT_SETTINGS={
 
 const state={
   user:null,settings:loadSettings(),activeArena:null,lastTestParams:null,
-  dashboard:null,compRoom:null,multiRoom:null,compPoll:null,multiPoll:null,multiScheduled:null,
+  dashboard:null,coach:null,compRoom:null,multiRoom:null,compPoll:null,multiPoll:null,multiScheduled:null,
   tabArmedUntil:0,commandIndex:0
 };
 
@@ -92,17 +92,17 @@ function applyUser(){if(!state.user)return;$("#headerAvatar").textContent=initia
 function navigate(page){
   if(page!=="type"&&state.activeArena?.context?.page==="type")state.activeArena.blur();
   $$('.page').forEach(p=>p.classList.toggle("active",p.id===`page-${page}`));$$('[data-nav]').forEach(b=>b.classList.toggle("active",b.dataset.nav===page));
-  if(page==="stats"){loadDashboard();loadHistory();}if(page==="leaderboard")loadLeaderboard();if(page==="practice")loadPractice();if(page==="competition")loadCompetitionRooms();if(page==="multiplayer")loadMultiRooms();if(page==="settings")syncSettingsUI();
+  if(page==="stats"){loadDashboard();loadHistory();}if(page==="coach")loadSmartCoach();if(page==="leaderboard")loadLeaderboard();if(page==="practice")loadPractice();if(page==="competition")loadCompetitionRooms();if(page==="multiplayer")loadMultiRooms();if(page==="settings")syncSettingsUI();
 }
 
 async function bootstrap(){
   applyTheme();fillLanguages();wire();syncSettingsUI();
   try{const h=await api("health");$("#apiFooter").textContent=`api ${h.version||"online"}`;}catch{$("#apiFooter").textContent="api offline";}
   const token=localStorage.getItem(TOKEN_KEY);if(!token){showAuth();return;}
-  try{const d=await api("me",{},true);state.user=d.user;applyUser();showApp();await loadDashboard();await restartMain();}catch{localStorage.removeItem(TOKEN_KEY);showAuth();toast("session ended — login again","error");}
+  try{const d=await api("me",{},true);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();}catch{localStorage.removeItem(TOKEN_KEY);showAuth();toast("session ended — login again","error");}
 }
-async function login(e){e.preventDefault();const b=e.submitter;busy(b,true,"signing in...");try{const d=await api("login",{userId:$("#loginUserId").value.trim(),password:$("#loginPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();await restartMain();toast("welcome back");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
-async function register(e){e.preventDefault();const b=e.submitter;busy(b,true,"creating...");try{const d=await api("register",{displayName:$("#registerName").value.trim(),userId:$("#registerUserId").value.trim(),password:$("#registerPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();await restartMain();toast("account created");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
+async function login(e){e.preventDefault();const b=e.submitter;busy(b,true,"signing in...");try{const d=await api("login",{userId:$("#loginUserId").value.trim(),password:$("#loginPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();toast("welcome back");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
+async function register(e){e.preventDefault();const b=e.submitter;busy(b,true,"creating...");try{const d=await api("register",{displayName:$("#registerName").value.trim(),userId:$("#registerUserId").value.trim(),password:$("#registerPassword").value});localStorage.setItem(TOKEN_KEY,d.token);state.user=d.user;applyUser();showApp();await loadDashboard();loadSmartCoach(true);await restartMain();toast("account created");}catch(err){toast(err.message,"error");}finally{busy(b,false);}}
 function logout(){clearInterval(state.compPoll);clearInterval(state.multiPoll);state.activeArena?.destroy();localStorage.removeItem(TOKEN_KEY);state.user=null;showAuth();}
 
 function renderModeOptions(){
@@ -146,9 +146,9 @@ class Arena{
   trackWords(v){if(this.mode==="zen")return;if(v.length>this.prevValue.length&&(v.endsWith(" ")||v.length===this.target.length)){const now=performance.now(),idx=v.trimEnd().split(/\s+/).length-1,word=this.target.trim().split(/\s+/)[idx]||"";if(word)this.wordTimes.push({word,ms:now-this.wordStart});this.wordStart=now;}}
   fail(reason){if(this.failed||this.finished)return;this.failed=true;clearInterval(this.timer);clearInterval(this.roomTimer);this.input.disabled=true;this.stage.classList.add("hidden");this.failBox.classList.remove("hidden");$("[data-fail-reason]",this.failBox).textContent=reason;$("#typingConfig")?.classList.remove("dimmed");}
   closeFail(){this.destroy();if(this.context.main)restartMain();}
-  async finish(){if(this.finished||this.failed||!this.input.value.length)return;this.finished=true;clearInterval(this.timer);clearInterval(this.roomTimer);this.input.disabled=true;if(!this.elapsed&&this.started)this.elapsed=(performance.now()-this.startedPerf)/1000;try{const local=this.localAnalytics();const d=await api("finishTest",{testId:this.test.testId,typedText:this.input.value,consistency:local.consistency},true);this.showResult(d.result,local);loadDashboard();if(this.context.roomId)this.pushRoomProgress(true);}catch(err){this.finished=false;this.input.disabled=false;toast(err.message,"error");}finally{$("#typingConfig")?.classList.remove("dimmed");}}
+  async finish(){if(this.finished||this.failed||!this.input.value.length)return;this.finished=true;clearInterval(this.timer);clearInterval(this.roomTimer);this.input.disabled=true;if(!this.elapsed&&this.started)this.elapsed=(performance.now()-this.startedPerf)/1000;try{const local=this.localAnalytics();const d=await api("finishTest",{testId:this.test.testId,typedText:this.input.value,consistency:local.consistency,slowWords:local.slow||[]},true);this.showResult(d.result,local);loadDashboard();if(this.context.roomId)this.pushRoomProgress(true);}catch(err){this.finished=false;this.input.disabled=false;toast(err.message,"error");}finally{$("#typingConfig")?.classList.remove("dimmed");}}
   localAnalytics(){const m=this.metrics(),vals=this.timeline.map(x=>x.wpm).filter(Number.isFinite),avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0,sd=vals.length?Math.sqrt(vals.reduce((s,x)=>s+(x-avg)**2,0)/vals.length):0,consistency=avg?clamp(100-(sd/avg*100),0,100):100;const slow=this.wordTimes.slice().sort((a,b)=>b.ms-a.ms).slice(0,8).map(x=>x.word);return{...m,consistency,slow:[...new Set(slow)]};}
-  showResult(r,local){this.stage.classList.add("hidden");$(".live-row",this.root).classList.add("hidden");$(".arena-bottom",this.root).classList.add("hidden");this.result.classList.remove("hidden");$("[data-result-wpm]",this.result).textContent=Math.round(r.wpm);$("[data-result-acc]",this.result).textContent=`${Number(r.accuracy).toFixed(1)}%`;$("[data-result-raw]",this.result).textContent=Math.round(r.rawWpm);$("[data-result-consistency]",this.result).textContent=`${Math.round(local.consistency)}%`;const cs=r.characterStats||{correct:r.correctChars||0,incorrect:r.errors||0,extra:0,missed:0};$("[data-result-chars]",this.result).textContent=`${cs.correct}/${cs.incorrect}/${cs.extra}/${cs.missed}`;$("[data-result-time]",this.result).textContent=`${Number(r.elapsed||this.elapsed).toFixed(1)}s`;$("[data-result-mode]",this.result).textContent=`${this.mode} · ${this.test.language}`;$("[data-result-xp]",this.result).textContent=`+${r.points||0}`;this.missedWords=Object.keys(r.wordErrorMap||{}).slice(0,12);this.slowWords=local.slow||[];$("[data-practice-missed]",this.result).classList.toggle("hidden",!this.missedWords.length);$("[data-practice-slow]",this.result).classList.toggle("hidden",!this.slowWords.length);this.renderHeat(r.errorMap||{});this.renderWords();this.drawChart();this.result.scrollIntoView({behavior:"smooth",block:"start"});}
+  showResult(r,local){this.stage.classList.add("hidden");$(".live-row",this.root).classList.add("hidden");$(".arena-bottom",this.root).classList.add("hidden");this.result.classList.remove("hidden");$("[data-result-wpm]",this.result).textContent=Math.round(r.wpm);$("[data-result-acc]",this.result).textContent=`${Number(r.accuracy).toFixed(1)}%`;$("[data-result-raw]",this.result).textContent=Math.round(r.rawWpm);$("[data-result-consistency]",this.result).textContent=`${Math.round(local.consistency)}%`;const cs=r.characterStats||{correct:r.correctChars||0,incorrect:r.errors||0,extra:0,missed:0};$("[data-result-chars]",this.result).textContent=`${cs.correct}/${cs.incorrect}/${cs.extra}/${cs.missed}`;$("[data-result-time]",this.result).textContent=`${Number(r.elapsed||this.elapsed).toFixed(1)}s`;$("[data-result-mode]",this.result).textContent=`${this.mode} · ${this.test.language}`;$("[data-result-xp]",this.result).textContent=`+${r.points||0}`;this.missedWords=Object.keys(r.wordErrorMap||{}).slice(0,12);this.slowWords=(r.slowWords&&r.slowWords.length?r.slowWords:local.slow)||[];$("[data-practice-missed]",this.result).classList.toggle("hidden",!this.missedWords.length);$("[data-practice-slow]",this.result).classList.toggle("hidden",!this.slowWords.length);this.renderHeat(r.errorMap||{});this.renderWords();this.drawChart();this.result.scrollIntoView({behavior:"smooth",block:"start"});}
   renderHeat(map){const box=$("[data-heatmap]",this.result),e=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,25),max=Math.max(1,...e.map(x=>x[1]));box.innerHTML=e.length?e.map(([c,n])=>`<span class="heat-tile" style="--heat:${(.16+.74*n/max).toFixed(2)}"><b>${esc(c===" "?"␠":c)}</b><small>${n}×</small></span>`).join(""):`<span class="muted-empty">no errors</span>`;}
   renderWords(){$("[data-missed-list]",this.result).innerHTML=this.missedWords.length?this.missedWords.map(w=>`<span class="word-chip">${esc(w)}</span>`).join(""):`<span class="muted-empty">none</span>`;$("[data-slow-list]",this.result).innerHTML=this.slowWords.length?this.slowWords.map(w=>`<span class="word-chip">${esc(w)}</span>`).join(""):`<span class="muted-empty">none</span>`;}
   drawChart(){const c=$("[data-result-chart]",this.result),rect=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=Math.max(320,rect.width),h=210;c.width=w*dpr;c.height=h*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);x.clearRect(0,0,w,h);const arr=this.timeline.length?this.timeline:[{t:this.elapsed,wpm:this.metrics().wpm,raw:this.metrics().raw,errors:this.metrics().errors}],max=Math.max(40,...arr.map(a=>a.raw))*1.15;x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--line");x.lineWidth=1;for(let i=1;i<5;i++){x.beginPath();x.moveTo(0,i*h/5);x.lineTo(w,i*h/5);x.stroke();}const draw=(key,color,width=2)=>{x.strokeStyle=color;x.lineWidth=width;x.beginPath();arr.forEach((a,i)=>{const px=arr.length===1?w/2:i/(arr.length-1)*(w-10)+5,py=h-8-(a[key]/max)*(h-20);i?x.lineTo(px,py):x.moveTo(px,py);});x.stroke();};const css=getComputedStyle(document.documentElement);draw("raw",css.getPropertyValue("--sub"),1.2);draw("wpm",css.getPropertyValue("--main"),2.2);x.fillStyle=css.getPropertyValue("--error");arr.forEach((a,i)=>{if(a.errors>0){const px=arr.length===1?w/2:i/(arr.length-1)*(w-10)+5;x.fillRect(px-1,h-7,2,-Math.min(30,a.errors*4));}});}
@@ -157,6 +157,44 @@ class Arena{
   async next(){if(this.context.main){state.settings.mode=this.mode==="custom"?"time":state.settings.mode;saveSettings();await restartMain();}else this.destroy();}
   async pushRoomProgress(final=false){if(!this.context.roomId||(!this.started&&!final))return;const m=this.metrics();api("roomProgress",{roomId:this.context.roomId,progress:final?100:Math.round(m.progress),wpm:Math.round(m.wpm),accuracy:Math.round(m.accuracy)},true).catch(()=>{});}
   destroy(){clearInterval(this.timer);clearInterval(this.roomTimer);this.mount.innerHTML="";if(state.activeArena===this)state.activeArena=null;$("#typingConfig")?.classList.remove("dimmed");}
+}
+
+
+async function loadSmartCoach(silent=false){
+  if(!state.user)return;
+  try{
+    const d=await api("smartCoach",{},true);state.coach=d;
+    const r=d.recommendation||{},weak=d.weakWords||[],chars=d.weakChars||[],signal=d.signal||{};
+    const title=r.title||"Build your baseline";
+    const text=r.text||"Complete a few tests so TypeForge can personalize your drills.";
+    if($("#smartStripTitle"))$("#smartStripTitle").textContent=title;
+    if($("#smartStripText"))$("#smartStripText").textContent=text;
+    if($("#coachRecommendationTitle"))$("#coachRecommendationTitle").textContent=title;
+    if($("#coachRecommendationText"))$("#coachRecommendationText").textContent=text;
+    if($("#coachRecommendationTags"))$("#coachRecommendationTags").innerHTML=(r.tags||[]).map(x=>`<span class="coach-tag">${esc(x)}</span>`).join("");
+    if($("#coachTodayTests"))$("#coachTodayTests").textContent=`${d.today?.tests||0} tests · ${d.today?.points||0} xp`;
+    if($("#dailyChallengeText"))$("#dailyChallengeText").textContent=`60 seconds · top 200 · ${LANGUAGES.find(x=>x[0]===state.settings.language)?.[1]||state.settings.language}`;
+    if($("#coachWeakWords"))$("#coachWeakWords").innerHTML=weak.length?weak.map(x=>`<span class="coach-word">${esc(x.word)} <b>${x.score}</b></span>`).join(""):`<span class="muted-empty">No repeated weak words yet.</span>`;
+    if($("#coachWeakChars"))$("#coachWeakChars").innerHTML=chars.length?chars.slice(0,15).map(x=>`<span class="coach-char"><b>${esc(x.char===" "?"␠":x.char)}</b><small>${x.count}×</small></span>`).join(""):`<span class="muted-empty">No recurring character errors yet.</span>`;
+    if($("#coachSignal"))$("#coachSignal").textContent=signal.label||"building baseline";
+    if($("#coachSpeedBar"))$("#coachSpeedBar").style.width=`${clamp(signal.speed||0,0,100)}%`;
+    if($("#coachAccuracyBar"))$("#coachAccuracyBar").style.width=`${clamp(signal.accuracy||0,0,100)}%`;
+    if($("#coachConsistencyBar"))$("#coachConsistencyBar").style.width=`${clamp(signal.consistency||0,0,100)}%`;
+  }catch(e){if(!silent)toast(e.message,"error");}
+}
+async function startSmartPractice(){
+  navigate("type");const mount="#mainArenaMount";if($(mount))$(mount).innerHTML=`<div class="muted-empty">building adaptive drill...</div>`;
+  try{const d=await api("smartTest",{language:state.settings.language},true);state.activeArena?.destroy();const el=$(mount);el.innerHTML="";state.activeArena=new Arena(el,d.test,{page:"type",main:true});state.lastTestParams=d.test.request||null;}
+  catch(e){toast(e.message,"error");restartMain();}
+}
+async function startDailyChallenge(){
+  navigate("type");const mount="#mainArenaMount";if($(mount))$(mount).innerHTML=`<div class="muted-empty">loading today's challenge...</div>`;
+  try{const d=await api("dailyChallenge",{language:state.settings.language},true);state.activeArena?.destroy();const el=$(mount);el.innerHTML="";state.activeArena=new Arena(el,d.test,{page:"type",main:true});state.lastTestParams=d.test.request||null;}
+  catch(e){toast(e.message,"error");restartMain();}
+}
+async function practiceCoachWeakWords(){
+  const words=(state.coach?.weakWords||[]).map(x=>x.word).slice(0,16);if(!words.length)return startSmartPractice();
+  navigate("type");state.settings.mode="custom";saveSettings();$("#customTextInput").value=Array.from({length:8},()=>words).flat().join(" ");$("#customDurationInput").value=0;await launchCustom();
 }
 
 async function loadDashboard(){if(!state.user)return;try{const d=await api("dashboardV4",{},true);state.dashboard=d;const s=d.stats||{},p=d.progression||{};$("#statBestWpm").textContent=s.bestWpm||0;$("#statAvgWpm").textContent=s.avgWpm||0;$("#statAccuracy").textContent=s.avgAccuracy||0;$("#statTests").textContent=s.totalTests||0;$("#headerLevel").textContent=p.level||1;$("#levelNumber").textContent=p.level||1;$("#pointsTotal").textContent=p.points||0;$("#xpText").textContent=`${p.currentLevelXp||0} / ${p.nextLevelXp||500} xp`;$("#xpBar").style.width=`${p.percent||0}%`;renderAchievements(d.achievements||[]);drawPerformance((d.recent||[]).slice().reverse());}catch(err){if(/session/i.test(err.message))logout();}}
@@ -192,7 +230,7 @@ const COMMANDS=[
   ["Time: 15 seconds","time",()=>setTime(15)],["Time: 30 seconds","time",()=>setTime(30)],["Time: 60 seconds","time",()=>setTime(60)],["Time: 120 seconds","time",()=>setTime(120)],
   ["Toggle punctuation","input",()=>{state.settings.punctuation=!state.settings.punctuation;saveSettings();restartMain();}],
   ["Toggle numbers","input",()=>{state.settings.numbers=!state.settings.numbers;saveSettings();restartMain();}],
-  ["Change language","language",()=>openLanguage()],["Open leaderboard","navigation",()=>navigate("leaderboard")],["Open stats","navigation",()=>navigate("stats")],["Open settings","navigation",()=>navigate("settings")],["Open competition","navigation",()=>navigate("competition")],["Open multiplayer","navigation",()=>navigate("multiplayer")],
+  ["Change language","language",()=>openLanguage()],["Open Smart Coach","navigation",()=>navigate("coach")],["Start Smart Practice","smart",()=>startSmartPractice()],["Daily Challenge","smart",()=>startDailyChallenge()],["Open leaderboard","navigation",()=>navigate("leaderboard")],["Open stats","navigation",()=>navigate("stats")],["Open settings","navigation",()=>navigate("settings")],["Open competition","navigation",()=>navigate("competition")],["Open multiplayer","navigation",()=>navigate("multiplayer")],
   ["Theme: Forge","theme",()=>setTheme("forge")],["Theme: Midnight","theme",()=>setTheme("midnight")],["Theme: Cyber Lime","theme",()=>setTheme("cyber")],["Theme: AMOLED","theme",()=>setTheme("amoled")]
 ];
 function setMode(m){state.settings.mode=m;saveSettings();closeCommands();restartMain();}
@@ -213,7 +251,7 @@ function wire(){
   $("#togglePunctuation").onclick=()=>{state.settings.punctuation=!state.settings.punctuation;saveSettings();restartMain();};$("#toggleNumbers").onclick=()=>{state.settings.numbers=!state.settings.numbers;saveSettings();restartMain();};$("#languageButton").onclick=openLanguage;
   $$('.mode-chip').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));bindModeOptionButtons();$("#launchCustomBtn").onclick=launchCustom;
   $(".modal-close").onclick=closeLanguage;$("#languageModal").onclick=e=>{if(e.target===$("#languageModal"))closeLanguage();};$("#languageSearch").oninput=e=>renderLanguageGrid(e.target.value);
-  $("#refreshLeaderboardBtn").onclick=loadLeaderboard;$("#refreshHistoryBtn").onclick=loadHistory;$("#refreshPracticeBtn").onclick=loadPractice;$("#submitPracticeBtn").onclick=submitPractice;
+  $("#smartPracticeQuickBtn").onclick=startSmartPractice;$("#refreshCoachBtn").onclick=()=>loadSmartCoach(false);$("#startRecommendedBtn").onclick=startSmartPractice;$("#startDailyBtn").onclick=startDailyChallenge;$("#practiceWeakWordsBtn").onclick=practiceCoachWeakWords;$("#refreshLeaderboardBtn").onclick=loadLeaderboard;$("#refreshHistoryBtn").onclick=loadHistory;$("#refreshPracticeBtn").onclick=loadPractice;$("#submitPracticeBtn").onclick=submitPractice;
   $("#createCompetitionBtn").onclick=()=>createRoom("competition");$("#joinCompetitionBtn").onclick=()=>joinRoom("competition",$("#compJoinCode").value);$("#refreshCompetitionBtn").onclick=loadCompetitionRooms;$("#startCompetitionTestBtn").onclick=startCompetition;$("#leaveCompetitionBtn").onclick=()=>leaveRoom("competition");$("#compRoomCode").onclick=e=>copyCode(e.currentTarget);
   $("#createMultiBtn").onclick=()=>createRoom("multiplayer");$("#joinMultiBtn").onclick=()=>joinRoom("multiplayer",$("#multiJoinCode").value);$("#refreshMultiBtn").onclick=loadMultiRooms;$("#multiReadyBtn").onclick=toggleReady;$("#multiStartBtn").onclick=startRace;$("#leaveMultiBtn").onclick=()=>leaveRoom("multiplayer");$("#multiRoomCode").onclick=e=>copyCode(e.currentTarget);
   const bindSetting=(id,key,kind="value")=>{$(id).onchange=e=>{state.settings[key]=kind==="checked"?e.target.checked:kind==="number"?Number(e.target.value):e.target.value;saveSettings();};};
