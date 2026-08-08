@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#111318">
-  <meta name="description" content="TypeForge v4 — typing platform with tests, quotes, zen, competition, multiplayer and analytics.">
-  <title>TypeForge Smart v5</title>
+  <meta name="description" content="TypeForge — premium typing platform with global competition, live multiplayer, smart coaching and deep analytics.">
+  <title>TypeForge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
   <link rel="apple-touch-icon" href="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png">
-  <link rel="stylesheet" href="./styles.css?v=5.0.0">
+  <link rel="stylesheet" href="./styles.css?v=6.0.0">
 </head>
 <body>
   <div class="global-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -21,7 +21,7 @@
     <div class="auth-card">
       <a class="brand auth-brand" href="#"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span></a>
       <div class="auth-intro">
-        <span class="tiny-label">TYPEFORGE SMART v5</span>
+        <span class="tiny-label">TypeForge</span>
         <h1>Train smarter.<br><span class="accent-text">Type smoother.</span></h1>
         <p>A smarter typing workspace with adaptive practice, live races, deep analytics and a coach that learns from your mistakes.</p>
       </div>
@@ -52,16 +52,16 @@
   <div id="appShell" class="app hidden">
     <header class="app-header">
       <div class="header-inner">
-        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span><small>smart v5</small></a>
-        <nav class="main-nav">
-          <button class="nav-link active" data-nav="type" title="Typing Test">⌨</button>
-          <button class="nav-link" data-nav="coach" title="Smart Coach">✦</button>
-          <button class="nav-link" data-nav="competition" title="Competition">🏆</button>
-          <button class="nav-link" data-nav="practice" title="Text Practice">▤</button>
-          <button class="nav-link" data-nav="multiplayer" title="Multiplayer">⚔</button>
-          <button class="nav-link" data-nav="leaderboard" title="Leaderboard">♛</button>
-          <button class="nav-link" data-nav="stats" title="Stats">▥</button>
-          <button class="nav-link" data-nav="settings" title="Settings">⚙</button>
+        <a class="brand" href="#" data-nav="type"><img class="brand-logo" src="https://i.ibb.co/j9zqjnHK/60f5d177-f360-4e81-bffa-b3b93135aab8.png" alt="TypeForge logo"><span>typeforge</span><small>pro v6</small></a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-link active" data-nav="type" title="Typing Test"><span class="nav-icon">⌨</span><span class="nav-label">Type</span></button>
+          <button class="nav-link" data-nav="coach" title="Smart Coach"><span class="nav-icon">✦</span><span class="nav-label">Coach</span></button>
+          <button class="nav-link nav-featured" data-nav="competition" title="Competition"><span class="nav-icon">🏆</span><span class="nav-label">Competition</span></button>
+          <button class="nav-link" data-nav="multiplayer" title="Multiplayer"><span class="nav-icon">⚔</span><span class="nav-label">Race</span></button>
+          <button class="nav-link" data-nav="practice" title="Text Practice"><span class="nav-icon">▤</span><span class="nav-label">Practice</span></button>
+          <button class="nav-link" data-nav="leaderboard" title="Leaderboard"><span class="nav-icon">♛</span><span class="nav-label">Ranks</span></button>
+          <button class="nav-link" data-nav="stats" title="Stats"><span class="nav-icon">▥</span><span class="nav-label">Stats</span></button>
+          <button class="nav-link" data-nav="settings" title="Settings"><span class="nav-icon">⚙</span><span class="nav-label">Settings</span></button>
         </nav>
         <div class="header-user">
           <span class="level-mini">lv <b id="headerLevel">1</b></span>
@@ -119,29 +119,58 @@
       </section>
 
       <section id="page-competition" class="page">
-        <div class="section-heading"><div><span class="tiny-label">COMPETITION</span><h2>Public & private score rooms</h2><p>Everyone receives the same passage. Highest verified WPM wins.</p></div><button id="refreshCompetitionBtn" class="ghost-button">refresh</button></div>
-        <div id="competitionHome" class="two-col">
-          <article class="panel">
-            <span class="tiny-label">CREATE ROOM</span><h3>New competition</h3>
+        <div class="section-heading competition-heading">
+          <div><span class="tiny-label">COMPETITION HUB</span><h2>Compete without the clutter.</h2><p>Join the all-player daily cup, or create a focused public/private room for your own group.</p></div>
+          <div class="heading-actions"><button id="refreshGlobalCompetitionBtn" class="ghost-button">refresh cup</button><button id="refreshCompetitionBtn" class="ghost-button">refresh rooms</button></div>
+        </div>
+
+        <div class="competition-feature-grid">
+          <article class="global-cup-card">
+            <div class="cup-glow"></div>
+            <div class="cup-topline"><span class="event-badge">GLOBAL · ALL PLAYERS</span><span id="globalCompetitionDate" class="event-date">today</span></div>
+            <div class="cup-copy"><span class="tiny-label">DAILY MAIN EVENT</span><h3>Global Daily Cup</h3><p>Every registered player gets the exact same 60-second English Top 200 passage. You have 3 attempts; only your best score appears on the board.</p></div>
+            <div class="cup-rules"><span>60 seconds</span><span>English</span><span>Top 200</span><span>Best of 3</span></div>
+            <div class="cup-stats">
+              <div><span>players</span><strong id="globalCompetitionPlayers">0</strong></div>
+              <div><span>your rank</span><strong id="globalCompetitionRank">—</strong></div>
+              <div><span>attempts</span><strong id="globalCompetitionAttempts">0/3</strong></div>
+              <div class="cup-best"><span>your best</span><strong id="globalCompetitionBest">—</strong><small id="globalCompetitionBestMeta">complete an attempt to enter the ranking</small></div>
+            </div>
+            <button id="startGlobalCompetitionBtn" class="accent-button cup-cta">start global attempt · 3 left</button>
+          </article>
+
+          <article class="panel global-board-panel">
+            <div class="panel-title compact-title"><div><span class="tiny-label">LIVE DAILY BOARD</span><h3>Top players today</h3></div><span class="fair-badge">same passage</span></div>
+            <div class="table-wrap global-board-wrap"><table class="global-board-table"><thead><tr><th>#</th><th>player</th><th>wpm</th><th>acc</th><th>time</th></tr></thead><tbody id="globalCompetitionBody"><tr><td colspan="5">loading global cup...</td></tr></tbody></table></div>
+          </article>
+        </div>
+
+        <div id="globalCompetitionArenaMount" class="arena-mount competition-arena"></div>
+
+        <div class="subsection-heading"><div><span class="tiny-label">ROOM COMPETITIONS</span><h3>Play with a selected group</h3><p>Create a public room for the community or a private room with a shareable code.</p></div></div>
+        <div id="competitionHome" class="two-col competition-room-grid">
+          <article class="panel room-create-panel">
+            <div class="panel-title compact-title"><div><span class="tiny-label">CREATE ROOM</span><h3>New score competition</h3></div><span class="soft-icon">＋</span></div>
+            <p class="panel-help">Players type the same room passage independently. The highest verified WPM ranks first.</p>
             <div class="form-grid">
               <label class="span2"><span>room name</span><input id="compName" placeholder="Weekend Speed Cup"></label>
               <label><span>visibility</span><select id="compVisibility"><option value="PUBLIC">public</option><option value="PRIVATE">private</option></select></label>
-              <label><span>players</span><select id="compMax"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></label>
+              <label><span>max players</span><select id="compMax"><option>5</option><option selected>10</option><option>20</option><option>30</option></select></label>
               <label><span>language</span><select id="compLanguage" class="language-select"></select></label>
-              <label><span>word list</span><select id="compList"><option value="200">top 200</option><option value="1000">1k</option></select></label>
+              <label><span>word pool</span><select id="compList"><option value="200">top 200</option><option value="1000">top 1K</option></select></label>
               <label><span>duration</span><select id="compDuration"><option>30</option><option selected>60</option><option>120</option></select></label>
             </div>
-            <button id="createCompetitionBtn" class="accent-button">create competition</button>
+            <button id="createCompetitionBtn" class="accent-button full-button">create competition room</button>
           </article>
-          <article class="panel">
-            <span class="tiny-label">JOIN PRIVATE</span><h3>Room code</h3>
-            <div class="inline-form"><input id="compJoinCode" placeholder="ABC123" maxlength="8"><button id="joinCompetitionBtn" class="ghost-button">join</button></div>
-            <div class="panel-divider"></div><span class="tiny-label">PUBLIC ROOMS</span><div id="competitionList" class="room-list muted-empty">loading...</div>
+          <article class="panel room-browser-panel">
+            <div class="panel-title compact-title"><div><span class="tiny-label">JOIN & DISCOVER</span><h3>Competition rooms</h3></div><span class="soft-icon">⌁</span></div>
+            <label><span>private room code</span></label><div class="inline-form"><input id="compJoinCode" placeholder="ABC123" maxlength="8"><button id="joinCompetitionBtn" class="ghost-button">join code</button></div>
+            <div class="panel-divider"></div><div class="list-head"><span class="tiny-label">PUBLIC ROOMS</span><small>tap join to enter</small></div><div id="competitionList" class="room-list muted-empty">loading...</div>
           </article>
         </div>
         <div id="competitionRoom" class="hidden">
-          <article class="panel room-head"><div><span class="tiny-label">ACTIVE COMPETITION</span><h2 id="compRoomName">room</h2><p>code <button id="compRoomCode" class="room-code">------</button></p></div><div><button id="startCompetitionTestBtn" class="accent-button">start attempt</button><button id="leaveCompetitionBtn" class="ghost-button">leave view</button></div></article>
-          <article class="panel"><span class="tiny-label">LIVE LEADERBOARD</span><div id="competitionPlayers" class="players"></div></article>
+          <article class="panel room-head"><div><span class="tiny-label">ACTIVE COMPETITION</span><h2 id="compRoomName">room</h2><p>share code <button id="compRoomCode" class="room-code">------</button></p></div><div><button id="startCompetitionTestBtn" class="accent-button">start attempt</button><button id="leaveCompetitionBtn" class="ghost-button">leave room</button></div></article>
+          <article class="panel"><div class="panel-title compact-title"><div><span class="tiny-label">ROOM LEADERBOARD</span><h3>Players</h3></div><span class="fair-badge">verified scores</span></div><div id="competitionPlayers" class="players"></div></article>
           <div id="competitionArenaMount" class="arena-mount"></div>
         </div>
       </section>
@@ -227,7 +256,7 @@
       </section>
     </main>
 
-    <footer class="app-footer"><span>typeforge smart v5</span><span id="apiFooter">api checking</span><button id="openCommandFooter">commands</button></footer>
+    <footer class="app-footer"><span>TypeForge</span><span id="apiFooter">api checking</span><button id="openCommandFooter">commands</button></footer>
   </div>
 
   <div id="languageModal" class="modal-backdrop hidden"><div class="modal-card"><div class="modal-head"><div><span class="tiny-label">LANGUAGE</span><h3>Choose language</h3></div><button class="icon-button modal-close">×</button></div><input id="languageSearch" class="modal-search" placeholder="search languages..."><div id="languageGrid" class="language-grid"></div></div></div>
@@ -249,7 +278,7 @@
     </div>
   </template>
 
-  <script src="./config.js?v=5.0.0"></script>
-  <script src="./app.js?v=5.0.0"></script>
+  <script src="./config.js?v=6.0.0"></script>
+  <script src="./app.js?v=6.0.0"></script>
 </body>
 </html>
